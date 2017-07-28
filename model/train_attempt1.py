@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
                         output = pool.map(env_step, action_space_array)
 
-                        action_space_array, observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [val[2] for val in output]
+                        action_space_array, observation, obs_reward = [val[0] for val in output], [val[1] for val in output], np.array([val[2] for val in output])[:,np.newaxis]
 
                         pred_obs, loss, _, summary = sess.run([state_pred, state_cost, update_state, merged_summary_op],
                                                     feed_dict={
