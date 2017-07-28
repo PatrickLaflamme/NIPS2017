@@ -124,6 +124,8 @@ if __name__ == "__main__":
 
         shuffle = np.random.shuffle
 
+        init = tf.initialize_all_variables()
+
         with tf.Session() as sess:
 
             sess.run(init)
