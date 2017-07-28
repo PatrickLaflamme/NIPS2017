@@ -1,25 +1,25 @@
-    from osim.env import RunEnv
-    import sys
-    from joblib import Parallel, delayed
-    from multiprocessing import Pool
-    import numpy as np
+from osim.env import RunEnv
+import sys
+from joblib import Parallel, delayed
+from multiprocessing import Pool
+import numpy as np
 
-    shuffle = np.random.shuffle
-    probs = [0.4,0.6]
-    choice = np.random.choice
+shuffle = np.random.shuffle
+probs = [0.4,0.6]
+choice = np.random.choice
 
 
-    env = RunEnv(visualize=False)
-    env.reset(difficulty=0)
+env = RunEnv(visualize=False)
+env.reset(difficulty=0)
 
-    def env_set(action_space_array):
+def env_set(action_space_array):
 
-        if choice([True, False], p=probs):
-            shuffle(action_space_array)
+    if choice([True, False], p=probs):
+        shuffle(action_space_array)
 
-        observation, obs_reward, done, info = env.step(action_space_array)
+    observation, obs_reward, done, info = env.step(action_space_array)
 
-        return [action_space_array, observation, obs_reward]
+    return [action_space_array, observation, obs_reward]
 
 
 
