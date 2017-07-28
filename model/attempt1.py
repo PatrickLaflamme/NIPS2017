@@ -65,7 +65,7 @@ def gen_action_weights(num_actions, num_states, n_hidden, n_layers):
 # Specialized function to perform a feed-forward sweep of the action generation sub-model
 def action_generation(state_list, state_outcome, weights, biases):
 
-    input_values = tf.concat(state_list, tf.subtract(state_outcome, state_list))
+    input_values = tf.concat([state_list, tf.subtract(state_outcome, state_list)],-1)
 
     next_action = multilayer_perceptron(input_values, weights, biases)
 
