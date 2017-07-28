@@ -147,8 +147,8 @@ if __name__ == "__main__":
 
                     pred_obs, loss, _ = sess.run([state_pred, state_cost, update_state],
                                                 feed_dict={
-                                                    action_list: action_space_array,
-                                                    state_list: old_observation,
-                                                    reward: reward,
-                                                    next_state: observation
+                                                    action_list: [action_space_array],
+                                                    state_list: [old_observation],
+                                                    reward: [obs_reward],
+                                                    next_state: [observation]
                                                         })
