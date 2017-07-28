@@ -122,7 +122,7 @@ if __name__ == "__main__":
                                                         next_state: [observation]
                                                             })
 
-                        summary_writer.add_summary(summary, iterval * num_steps + step))
+                        summary_writer.add_summary(summary, iterval * num_steps + step)
 
                         tot_loss += loss
 
