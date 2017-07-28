@@ -25,6 +25,7 @@ def env_set(action_space_array):
 if __name__ == "__main__":
 
     import tensorflow as tf
+    import attempt1 as model
 
     num_actions = 18
     num_states = 41
@@ -45,13 +46,13 @@ if __name__ == "__main__":
     reward = tf.placeholder(tf.float32, [None,1], name='reward')
     next_state = tf.placeholder(tf.float32, [None,num_states], name = 'next_state')
 
-    [weights['state'], biases['state']] = gen_state_weights(num_actions, num_states, n_hidden_state, n_layers_state)
+    [weights['state'], biases['state']] = model.gen_state_weights(num_actions, num_states, n_hidden_state, n_layers_state)
 
-    [weights['action'], biases['action']] = gen_action_weights(num_actions, num_states, n_hidden_action, n_layers_action)
+    [weights['action'], biases['action']] = model.gen_action_weights(num_actions, num_states, n_hidden_action, n_layers_action)
 
-    actions_list = action_generation(state_list, next_state, weights['action'], biases['action'])
+    actions_list = model.action_generation(state_list, next_state, weights['action'], biases['action'])
 
-    state_pred = state_prediction(action_list, state_list, reward, weights['state'], biases['state'])
+    state_pred = model.state_prediction(action_list, state_list, reward, weights['state'], biases['state'])
 
     state_cost = tf.reduce_mean(tf.square(tf.concat([next_state, reward],-1) - state_pred), name = 'cost')
     state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
