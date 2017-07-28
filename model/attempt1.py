@@ -109,7 +109,7 @@ if __name__ == "__main__":
     state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
     update_state = state_optimizer.minimize(state_cost)
 
-    action_cost = -(tf.log(actions_list)*reward_holder)
+    action_cost = -(tf.log(action_list)*reward)
     action_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
     update_state = action_optimizer.minimize(action_cost)
 
