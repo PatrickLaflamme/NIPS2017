@@ -149,6 +149,6 @@ if __name__ == "__main__":
                                                 feed_dict={
                                                     action_list: [action_space_array],
                                                     state_list: [old_observation],
-                                                    reward: [obs_reward],
+                                                    reward: [[obs_reward]],
                                                     next_state: [observation]
                                                         })
