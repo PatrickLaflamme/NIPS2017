@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     [weights['action'], biases['action']] = gen_action_weights(num_actions, num_states, n_hidden_action, n_layers_action)
 
-    actions_list = action_generaton(state_list, state_outcome, weights['action'], biases['action'])
+    actions_list = action_generation(state_list, state_outcome, weights['action'], biases['action'])
 
     state_pred = state_prediction(action_list, state_list, weights['state'], biases['state'])
 
