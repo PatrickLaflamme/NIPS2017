@@ -16,6 +16,8 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu):
 
         tf.summary.histogram("output" + layer, layer_output)
 
+        layer_input = layer_output
+
     return layer_output
 
 # a generalized function whose purpose is to initialize the weights for a fully connect ANN.
