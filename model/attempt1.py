@@ -130,8 +130,8 @@ if __name__ == "__main__":
 
             for iter in range(num_rounds):
 
-                env.reset(difficulty=0) 
-
+                env.reset(difficulty=0)
+                
                 shuffle(action_space_array)
                 old_observation, old_reward, done, info = env.step(action_space_array)
 
