@@ -9,7 +9,13 @@ choice = np.random.choice
 
 
 env = RunEnv(visualize=False)
+
 env.reset(difficulty=0)
+
+def env_reset(difficulty):
+
+    env.reset(difficulty=difficulty)
+
 
 def env_set(action_space_array):
 
