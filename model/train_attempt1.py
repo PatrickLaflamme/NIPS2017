@@ -140,4 +140,4 @@ if __name__ == "__main__":
 
                         print("iter="+str(iterval) + ", average loss=" + str(tot_loss/display_step))
 
-                        saver.save(sess, save_file, global_step=iterval/display_step)
+                        saver.save(sess, save_file, global_step=int(iterval/display_step))
