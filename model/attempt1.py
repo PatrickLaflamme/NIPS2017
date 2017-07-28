@@ -6,8 +6,6 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu):
 
     layer_output = x
 
-    print(sorted(weights.keys()))
-
     for layer in sorted(weights.keys()):
 
         layer_activation = tf.add(tf.matmul(layer_output, weights[layer]), biases[layer], name="activation" + layer)
