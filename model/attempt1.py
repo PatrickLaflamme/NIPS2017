@@ -31,7 +31,7 @@ def gen_mlp_weights(num_input, num_output, n_hidden, n_layers, name=''):
     weights = dict()
     biases = dict()
 
-    for layer_number in range(n_layers):
+    for layer_number in range(n_layers+1):
 
         weights[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]]), name = name + str(layer_number))
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     reward = tf.placeholder(tf.float32, [1], name='reward')
     next_state = tf.placeholder(tf.float32, [num_states], name = 'next_state')
 
-    [weights['state'], biases['state']] = gen_state_weights(num_actions, num_states, n_hidden_state, n_layers_state)
+    [weights['state'], biases['state']] = gen_state_weights(num_actions+1, num_states+1, n_hidden_state, n_layers_state)
 
     [weights['action'], biases['action']] = gen_action_weights(num_actions, num_states, n_hidden_action, n_layers_action)
 
