@@ -60,7 +60,7 @@ def gen_action_weights(num_actions, num_states, n_hidden, n_layers):
 
     [weights, biases] = gen_mlp_weights(num_actions + num_states*2, num_actions, n_hidden, n_layers, name = "action_generation")
 
-    return [weights, heights]
+    return [weights, biases]
 
 # Specialized function to perform a feed-forward sweep of the action generation sub-model
 def action_generation(state_list, state_outcome, weights, biases):
