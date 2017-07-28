@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
     actions_list = action_generation(state_list, next_state, weights['action'], biases['action'])
 
-    state_pred = state_prediction(action_list, state_list, weights['state'], biases['state'])
+    state_pred = state_prediction(action_list, state_list, reward, weights['state'], biases['state'])
 
     state_cost = tf.reduce_sum(tf.square(tf.concat(next_state, reward) - state_pred), name = 'cost')
     state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
