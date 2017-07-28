@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
         save_file = "state/sate_vars"
 
-        log_folder = "state_training_log"
+        logs_path = "state_training_log"
 
         num_rounds = 5000
         num_steps = 500
