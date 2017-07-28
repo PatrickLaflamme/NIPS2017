@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
                 for iterval in range(num_rounds):
 
-                    pool.map(env.reset, [0]*batch_size)
+                    pool.map(env_reset, [0]*batch_size)
 
                     output = pool.map(env_step, action_space_array)
 
