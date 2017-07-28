@@ -1,6 +1,5 @@
 from osim.env import RunEnv
 import sys
-from joblib import Parallel, delayed
 from multiprocessing import Pool
 import numpy as np
 
@@ -24,6 +23,8 @@ def env_set(action_space_array):
 
 
 if __name__ == "__main__":
+
+    import tensorflow as tf
 
     num_actions = 18
     num_states = 41
