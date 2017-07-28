@@ -76,6 +76,7 @@ def action_generation(state_list, state_outcome, weights, biases):
 if __name__ == "__main__":
 
     from osim.env import RunEnv
+    import sys
 
     env = RunEnv(visualize=False)
     env.reset(difficulty=0)
