@@ -138,6 +138,6 @@ if __name__ == "__main__":
 
                     if iterval % display_step == 0:
 
-                        print("iter="+str(iterval) + ", average loss=" + str(tot_loss/display_step))
+                        print("iter="+str(iterval) + ", average loss=" + str(tot_loss/(display_step*batch_size)))
 
                         saver.save(sess, save_file, global_step=int(iterval/display_step))
