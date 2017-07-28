@@ -71,7 +71,7 @@ def action_generation(state_list, state_outcome, weights, biases):
 
     return next_action
 
-if __name__ = "__main__":
+if __name__ == "__main__":
 
     from osim.env import RunEnv
 
@@ -134,7 +134,7 @@ if __name__ = "__main__":
 
                 shuffle(action_space_array)
                 old_observation, old_reward, done, info = env.step(action_space_array)
-                
+
                 for step in range(num_steps):
 
                     if choice([True, False], p=probs):
