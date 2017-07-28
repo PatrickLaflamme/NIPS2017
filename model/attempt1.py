@@ -42,14 +42,14 @@ def gen_mlp_weights(num_input, num_output, n_hidden, n_layers, name=''):
 # Specialized function to generate weights for the state prection sub-model.
 def gen_state_weights(num_actions, num_states, n_hidden, n_layers):
 
-    [weights, biases] = gen_mlp_weights(num_actions + num_states, num_states, n_hidden, n_layers, name = "state_prediction")
+    [weights, biases] = gen_mlp_weights(num_actions + num_states + 1, num_states + 1, n_hidden, n_layers, name = "state_prediction")
 
     return [weights, biases]
 
 # Specialized function to perform a feed-forward sweep of the state prediction sub-model.
-def state_prediction(action_list, state_list, state_outcome, weights, biases):
+def state_prediction(action_list, state_list, reward, weights, biases):
 
-    input_values = tf.concat([action_list, state_list],-1)
+    input_values = tf.concat([action_list, state_list, reward],-1)
 
     prediction = multilayer_perceptron(input_values, weights, biases)
 
@@ -69,7 +69,14 @@ def action_generation(state_list, state_outcome, weights, biases):
 
     next_action = multilayer_perceptron(input_values, weights, biases)
 
+    return next_action
+
 if __name__ = "__main__":
+
+    from osim.env import RunEnv
+
+    env = RunEnv(visualize=False)
+    env.reset(difficulty=0)
 
     num_actions = 18
     num_states = 41
@@ -83,12 +90,62 @@ if __name__ = "__main__":
     weights = dict()
     biases = dict()
 
-    actions = tf.placeholder(tf.float32, [num_actions], name='action_list')
-    states = tf.placeholder(tf.float32, [num_states], name = 'state_list')
-    pred_states = tf.placeholder(tf.float32, [num_states], name = 'pred_states')
-    state_error = tf.subtract(states, pred_states, name='state_error')
-
+    action_list = tf.placeholder(tf.float32, [num_actions], name='action_list')
+    state_list = tf.placeholder(tf.float32, [num_states], name = 'state_list')
+    reward = tf.placeholder(tf.float32, [1], name='reward')
+    next_state = tf.placeholder(tf.float32, [num_states], name = 'next_state')
 
     [weights['state'], biases['state']] = gen_state_weights(num_actions, num_states, n_hidden_state, n_layers_state)
 
     [weights['action'], biases['action']] = gen_action_weights(num_actions, num_states, n_hidden_action, n_layers_action)
+
+    actions_list = action_generaton(state_list, state_outcome, weights['action'], biases['action'])
+
+    state_pred = state_prediction(action_list, state_list, weights['state'], biases['state'])
+
+    state_cost = tf.reduce_sum(tf.square(tf.concat(next_state, reward) - state_pred), name = 'cost')
+    state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+    update_state = state_optimizer.minimise(state_cost)
+
+    action_cost = -(tf.log(actions_list)*reward_holder)
+    action_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+    update_state = action_optimizer.minimise(action_cost)
+
+    if sys.argv[0] == 'train_state':
+
+        num_rounds = 50000
+        num_steps = 500
+
+        action_space_array = np.array([1]*4 + [0]*14)
+
+        choice = np.random.choice
+        probs = [.5,.5]
+
+        shuffle = np.random.shuffle
+
+        with tf.Session() as sess:
+
+            sess.run(init)
+            i = 0
+
+            for iter in range(num_rounds):
+
+                RunEnv.reset(difficulty=0) 
+
+                shuffle(action_space_array)
+                old_observation, old_reward, done, info = env.step(action_space_array)
+                
+                for step in range(num_steps):
+
+                    if choice([True, False], p=probs):
+                        shuffle(action_space_array)
+
+                    observation, reward, done, info = env.step(action_space_array)
+
+                    pred_obs, loss, _ = sess.run([state_pred, state_cost, update_state],
+                                                feed_dict={
+                                                    action_list: action_space_array,
+                                                    state_list: old_observation,
+                                                    reward: reward,
+                                                    next_state: observation
+                                                        })

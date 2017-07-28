@@ -1,7 +1,7 @@
 from osim.env import RunEnv
 import numpy as np
 
-env = RunEnv(visualize)
+env = RunEnv(visualize=False)
 
 num_rounds = 50000
 num_steps = 500
