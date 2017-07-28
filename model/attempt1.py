@@ -91,10 +91,10 @@ if __name__ == "__main__":
     weights = dict()
     biases = dict()
 
-    action_list = tf.placeholder(tf.float32, [1,num_actions], name='action_list')
-    state_list = tf.placeholder(tf.float32, [1,num_states], name = 'state_list')
-    reward = tf.placeholder(tf.float32, [1,1], name='reward')
-    next_state = tf.placeholder(tf.float32, [1,num_states], name = 'next_state')
+    action_list = tf.placeholder(tf.float32, [None,num_actions], name='action_list')
+    state_list = tf.placeholder(tf.float32, [None,num_states], name = 'state_list')
+    reward = tf.placeholder(tf.float32, [None,1], name='reward')
+    next_state = tf.placeholder(tf.float32, [None,num_states], name = 'next_state')
 
     [weights['state'], biases['state']] = gen_state_weights(num_actions, num_states, n_hidden_state, n_layers_state)
 
@@ -160,4 +160,4 @@ if __name__ == "__main__":
 
                 if iterval % display_step == 0:
 
-                    print("iter="+str(iterval) + ", average reward=" + str(tot_loss/display_step))
+                    print("iter="+str(iterval) + ", average loss=" + str(tot_loss/display_step))
