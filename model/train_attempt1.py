@@ -17,7 +17,7 @@ def env_reset(difficulty):
     env.reset(difficulty=difficulty)
 
 
-def env_set(action_space_array):
+def env_step(action_space_array):
 
     if choice([True, False], p=probs):
         shuffle(action_space_array)
