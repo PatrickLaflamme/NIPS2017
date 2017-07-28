@@ -90,10 +90,10 @@ if __name__ == "__main__":
     weights = dict()
     biases = dict()
 
-    action_list = tf.placeholder(tf.float32, [num_actions], name='action_list')
-    state_list = tf.placeholder(tf.float32, [num_states], name = 'state_list')
+    action_list = tf.placeholder(tf.float32, [1,num_actions], name='action_list')
+    state_list = tf.placeholder(tf.float32, [1,num_states], name = 'state_list')
     reward = tf.placeholder(tf.float32, [1], name='reward')
-    next_state = tf.placeholder(tf.float32, [num_states], name = 'next_state')
+    next_state = tf.placeholder(tf.float32, [1,num_states], name = 'next_state')
 
     [weights['state'], biases['state']] = gen_state_weights(num_actions+1, num_states+1, n_hidden_state, n_layers_state)
 
