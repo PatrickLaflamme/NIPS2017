@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
                     output = pool.map(env_step, action_space_array)
 
-                    action_space_array, old_observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [val[2] for val in output]
+                    action_space_array, old_observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [[val[2]] for val in output]
 
                     tot_loss = 0
 
@@ -126,7 +126,7 @@ if __name__ == "__main__":
                                                     feed_dict={
                                                         action_list: action_space_array,
                                                         state_list: old_observation,
-                                                        reward: [obs_reward],
+                                                        reward: obs_reward,
                                                         next_state: observation
                                                             })
 
