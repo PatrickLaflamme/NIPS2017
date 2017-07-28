@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
                     output = pool.map(env_step, action_space_array)
 
-                    action_space_array, observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [val[2] for val in output]
+                    action_space_array, old_observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [val[2] for val in output]
 
                     tot_loss = 0
 
@@ -131,6 +131,8 @@ if __name__ == "__main__":
                                                             })
 
                         summary_writer.add_summary(summary, iterval * num_steps + step)
+
+                        old_observation = observation
 
                         tot_loss += loss
 
