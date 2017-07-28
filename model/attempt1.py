@@ -4,7 +4,7 @@ import tensorflow as tf
 # highly generalized function to perform a feedforward sweep of a fully connected ANN.
 def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu):
 
-    layer_input = x
+    layer_output = x
 
     print(sorted(weights.keys()))
 
@@ -15,8 +15,6 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu):
         layer_output = activation_func(layer_activation, name = "output" + layer)
 
         tf.summary.histogram("output" + layer, layer_output)
-
-        layer_input = layer_output
 
     return layer_output
 
