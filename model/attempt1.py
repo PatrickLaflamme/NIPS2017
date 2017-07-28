@@ -114,7 +114,7 @@ if __name__ == "__main__":
     action_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
     update_state = action_optimizer.minimize(action_cost)
 
-    if sys.argv[0] == 'train_state':
+    if sys.argv[1] == 'train_state':
 
         num_rounds = 50000
         num_steps = 500
