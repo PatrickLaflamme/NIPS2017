@@ -33,9 +33,9 @@ def gen_mlp_weights(num_input, num_output, n_hidden, n_layers, name=''):
 
     for layer_number in range(n_layers):
 
-        weights[layer_number+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]]), name = name + str(layer_number))
+        weights[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]]), name = name + str(layer_number))
 
-        biases[layer_number+'_'+name] = tf.Variable(tf.random_normal(n_hidden[layer_number+1]))
+        biases[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal(n_hidden[layer_number+1]))
 
     return [weights, biases]
 
@@ -131,7 +131,7 @@ if __name__ == "__main__":
             for iter in range(num_rounds):
 
                 env.reset(difficulty=0)
-                
+
                 shuffle(action_space_array)
                 old_observation, old_reward, done, info = env.step(action_space_array)
 
