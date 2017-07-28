@@ -142,7 +142,7 @@ if __name__ == "__main__":
                     if choice([True, False], p=probs):
                         shuffle(action_space_array)
 
-                    observation, reward, done, info = env.step(action_space_array)
+                    observation, obs_reward, done, info = env.step(action_space_array)
 
                     pred_obs, loss, _ = sess.run([state_pred, state_cost, update_state],
                                                 feed_dict={
