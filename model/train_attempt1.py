@@ -80,7 +80,7 @@ if __name__ == "__main__":
         num_steps = 500
         display_step = 100
 
-        action_space_array = [np.array(batch_size, [1]*4 + [0]*14)]*batch_size
+        action_space_array = [np.array([1]*4 + [0]*14)]*batch_size
 
         choice = np.random.choice
         probs = [.5,.5]
