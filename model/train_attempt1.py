@@ -54,9 +54,9 @@ if __name__ == "__main__":
 
     [weights['state'], biases['state']] = model.gen_state_weights(num_actions, num_states, n_hidden_state, n_layers_state)
 
-    [weights['action'], biases['action']] = model.gen_action_weights(num_actions, num_states, n_hidden_action, n_layers_action)
+    #[weights['action'], biases['action']] = model.gen_action_weights(num_actions, num_states, n_hidden_action, n_layers_action)
 
-    actions_list = model.action_generation(state_list, next_state, weights['action'], biases['action'])
+    #actions_list = model.action_generation(state_list, next_state, weights['action'], biases['action'])
 
     state_pred = model.state_prediction(action_list, state_list, reward, weights['state'], biases['state'])
 
@@ -64,9 +64,9 @@ if __name__ == "__main__":
     state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
     update_state = state_optimizer.minimize(state_cost)
 
-    action_cost = -(tf.log(actions_list)*reward)
-    action_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-    update_state = action_optimizer.minimize(action_cost)
+    #action_cost = -(tf.log(actions_list)*reward)
+    #action_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+    #update_state = action_optimizer.minimize(action_cost)
 
     # Create a summary to monitor cost tensor
     tf.summary.scalar("loss", state_cost)
