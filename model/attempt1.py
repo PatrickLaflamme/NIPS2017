@@ -35,7 +35,7 @@ def gen_mlp_weights(num_input, num_output, n_hidden, n_layers, name=''):
 
         weights[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]]), name = name + str(layer_number))
 
-        biases[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number+1]]), name = name = name + str(layer_number) + '_bias')
+        biases[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number+1]]), name = name + str(layer_number) + '_bias')
 
     return [weights, biases]
 
