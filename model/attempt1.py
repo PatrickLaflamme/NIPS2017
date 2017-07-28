@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     state_pred = state_prediction(action_list, state_list, reward, weights['state'], biases['state'])
 
-    state_cost = tf.reduce_sum(tf.square(tf.concat([next_state, reward],-1) - state_pred), name = 'cost')
+    state_cost = tf.reduce_mean(tf.square(tf.concat([next_state, reward],-1) - state_pred), name = 'cost')
     state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
     update_state = state_optimizer.minimize(state_cost)
 
@@ -114,8 +114,9 @@ if __name__ == "__main__":
 
     if sys.argv[1] == 'train_state':
 
-        num_rounds = 50000
+        num_rounds = 5000
         num_steps = 500
+        display_step = 100
 
         action_space_array = np.array([1]*4 + [0]*14)
 
@@ -124,19 +125,21 @@ if __name__ == "__main__":
 
         shuffle = np.random.shuffle
 
-        init = tf.initialize_all_variables()
+        init = tf.global_variables_initializer()
 
         with tf.Session() as sess:
 
             sess.run(init)
             i = 0
 
-            for iter in range(num_rounds):
+            for iterval in range(num_rounds):
 
                 env.reset(difficulty=0)
 
                 shuffle(action_space_array)
                 old_observation, old_reward, done, info = env.step(action_space_array)
+
+                tot_loss = 0
 
                 for step in range(num_steps):
 
@@ -152,3 +155,9 @@ if __name__ == "__main__":
                                                     reward: [[obs_reward]],
                                                     next_state: [observation]
                                                         })
+
+                    tot_loss += loss
+
+                if iterval % display_step == 0:
+
+                    print("iter="+str(iterval) + ", average reward=" + str(tot_loss/display_step))
