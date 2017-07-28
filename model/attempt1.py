@@ -75,6 +75,8 @@ if __name__ == "__main__":
 
     from osim.env import RunEnv
     import sys
+    from joblib import Parallel, delayed
+    import multiprocessing
 
     env = RunEnv(visualize=False)
     env.reset(difficulty=0)
