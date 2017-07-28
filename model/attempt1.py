@@ -58,7 +58,7 @@ def state_prediction(action_list, state_list, reward, weights, biases):
 # Specialized function to generate weights for the action generation sub-model.
 def gen_action_weights(num_actions, num_states, n_hidden, n_layers):
 
-    [weights, biases] = gen_mlp_weights(num_actions + num_states*2, num_actions, n_hidden, n_layers, name = "action_generation")
+    [weights, biases] = gen_mlp_weights(num_states*2, num_actions, n_hidden, n_layers, name = "action_generation")
 
     return [weights, biases]
 
