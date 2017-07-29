@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
         num_rounds = 500
         num_steps = 500
-        display_step = 100
+        display_step = 5
 
         data_save = [[None]*num_steps]*num_rounds
 
