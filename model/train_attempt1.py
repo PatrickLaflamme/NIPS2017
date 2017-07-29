@@ -149,8 +149,8 @@ if __name__ == "__main__":
 
                             all_old_obs = old_observation.append(relived_old_obs[step])
 
-                            all_reward = reward.append(relived_reward[step])
-                            
+                            all_reward = obs_reward.append(relived_reward[step])
+
                         else:
                             all_actions = action_space_array
 
@@ -158,7 +158,7 @@ if __name__ == "__main__":
 
                             all_old_obs = old_observation
 
-                            all_reward = reward
+                            all_reward = obs_reward
 
                         pred_obs, loss, _, summary = sess.run([state_pred, state_cost, update_state, merged_summary_op],
                                                     feed_dict={
