@@ -39,8 +39,8 @@ if __name__ == "__main__":
 
     batch_size = 8
 
-    n_layers_state = 2
-    n_hidden_state = [512,512]
+    n_layers_state = 3
+    n_hidden_state = [1024,1024,1024]
 
     n_layers_action = 3
     n_hidden_action = [400,400,400]
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     state_pred = model.state_prediction(action_list, state_list, reward, weights['state'], biases['state'])
 
     state_cost = tf.reduce_mean(tf.square(tf.concat([next_state, reward],-1) - state_pred), name = 'cost')
-    state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+    state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
     update_state = state_optimizer.minimize(state_cost)
 
     #action_cost = -(tf.log(actions_list)*reward)
@@ -177,7 +177,7 @@ if __name__ == "__main__":
 
                     if iterval % display_step == 0:
 
-                        print("iter="+str(iterval) + ", average loss=" + str(tot_loss/(display_step*(batch_size+num_relived))))
+                        print("iter="+str(iterval) + ", average loss=" + str(tot_loss/(display_step*(batch_size+num_relived)*num_steps)))
 
                         saver.save(sess, save_file, global_step=int(iterval/display_step))
 
