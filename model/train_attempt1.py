@@ -86,7 +86,7 @@ if __name__ == "__main__":
         num_steps = 500
         display_step = 100
 
-        #data_save = [[None]*num_steps]*num_rounds
+        data_save = [[None]*num_steps]*num_rounds
 
         action_space_array = [np.array([1]*4 + [0]*14)]*batch_size
 
@@ -118,18 +118,54 @@ if __name__ == "__main__":
 
                     tot_loss = 0
 
+                    num_relived = 0
+
+                    if iterval > 99:
+
+                        num_relived = 20
+
+                        relive = data_save[choice(iterval-1, num_relived)]
+
+                        relived_actions = [val for val in batch[0] for batch in relive]
+
+                        relived_old_obs = [val for val in batch[1] for batch in relive]
+
+                        relived_obs = [val for val in batch[2] for batch in relive]
+
+                        relived_reward = [val for val in batch[3] for batch in relive]
+
                     for step in range(num_steps):
 
                         output = pool.map(env_step, action_space_array)
 
                         action_space_array, observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [[val[2]] for val in output]
 
+                        data_save[iterval][step] = [action_space_array, old_observation, observation, obs_reward]
+
+                        if iterval > 99:
+                            all_actions = action_space_array.append(relived_actions[step])
+
+                            all_obs = observation.append(relived_obs[step])
+
+                            all_old_obs = old_observation.append(relived_old_obs[step])
+
+                            all_reward = reward.append(relived_reward[step])
+                            
+                        else:
+                            all_actions = action_space_array
+
+                            all_obs = observation
+
+                            all_old_obs = old_observation
+
+                            all_reward = reward
+
                         pred_obs, loss, _, summary = sess.run([state_pred, state_cost, update_state, merged_summary_op],
                                                     feed_dict={
-                                                        action_list: action_space_array,
-                                                        state_list: old_observation,
-                                                        reward: obs_reward,
-                                                        next_state: observation
+                                                        action_list: all_actions,
+                                                        state_list: all_old_obs,
+                                                        reward: all_reward,
+                                                        next_state: all_obs
                                                             })
 
                         summary_writer.add_summary(summary, iterval * num_steps + step)
@@ -140,6 +176,6 @@ if __name__ == "__main__":
 
                     if iterval % display_step == 0:
 
-                        print("iter="+str(iterval) + ", average loss=" + str(tot_loss/(display_step*batch_size)))
+                        print("iter="+str(iterval) + ", average loss=" + str(tot_loss/(display_step*(batch_size+num_relived))))
 
                         saver.save(sess, save_file, global_step=int(iterval/display_step))
