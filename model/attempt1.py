@@ -12,7 +12,7 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, drop
 
         layer_activation = tf.add(tf.matmul(layer_output, weights[layer]), biases[layer], name="activation" + layer)
 
-        #layer_activation = tf.nn.dropout(layer_activation,dropout_keep_prob)
+        layer_activation = tf.nn.dropout(layer_activation,dropout_keep_prob)
 
         if i < num_keys-1:
 
@@ -43,9 +43,9 @@ def gen_mlp_weights(num_input, num_output, n_hidden, n_layers, name=''):
 
     for layer_number in range(n_layers+1):
 
-        weights[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]]), name = name + str(layer_number))
+        weights[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]],stddev=0.1), name = name + str(layer_number))
 
-        biases[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number+1]]), name = name + str(layer_number) + '_bias')
+        biases[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number+1]],stddev=0.1), name = name + str(layer_number) + '_bias')
 
     return [weights, biases]
 
