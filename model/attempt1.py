@@ -12,7 +12,7 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, drop
 
         layer_activation = tf.add(tf.matmul(layer_output, weights[layer]), biases[layer], name="activation" + layer)
 
-        layer_activation = tf.nn.dropout(layer_activation,dropout_keep_prob)
+        #layer_activation = tf.nn.dropout(layer_activation,dropout_keep_prob)
 
         if i < num_keys-1:
 
@@ -22,7 +22,7 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, drop
 
             layer_output = layer_activation
 
-        #tf.summary.histogram("output" + layer, layer_output)
+        tf.summary.histogram("output" + layer, layer_output)
 
     return layer_output
 
