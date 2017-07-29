@@ -86,7 +86,7 @@ if __name__ == "__main__":
         num_steps = 500
         display_step = 100
 
-        data_save = [[None]*num_steps]*num_rounds
+        #data_save = [[None]*num_steps]*num_rounds
 
         action_space_array = [np.array([1]*4 + [0]*14)]*batch_size
 
@@ -117,8 +117,6 @@ if __name__ == "__main__":
                     action_space_array, old_observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [[val[2]] for val in output]
 
                     tot_loss = 0
-
-                    if iterval > 0:
 
                     for step in range(num_steps):
 
