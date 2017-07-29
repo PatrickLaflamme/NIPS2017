@@ -22,7 +22,7 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, drop
 
             layer_output = layer_activation
 
-        tf.summary.histogram("output" + layer, layer_output)
+        #tf.summary.histogram("output" + layer, layer_output)
 
     return layer_output
 
