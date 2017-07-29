@@ -39,7 +39,7 @@ if __name__ == "__main__":
     batch_size = 8
 
     n_layers_state = 2
-    n_hidden_state = [100,100]
+    n_hidden_state = [512,512]
 
     n_layers_action = 3
     n_hidden_action = [400,400,400]
@@ -82,9 +82,11 @@ if __name__ == "__main__":
 
         logs_path = "state_training_log"
 
-        num_rounds = 5000
+        num_rounds = 500
         num_steps = 500
         display_step = 100
+
+        data_save = [[None]*num_steps]*num_rounds
 
         action_space_array = [np.array([1]*4 + [0]*14)]*batch_size
 
@@ -112,15 +114,17 @@ if __name__ == "__main__":
 
                     output = pool.map(env_step, action_space_array)
 
-                    action_space_array, old_observation, obs_reward = [val[0] for val in output], [val[1] for val in output], np.array([val[2] for val in output])[:,np.newaxis]
+                    action_space_array, old_observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [[val[2]] for val in output]
 
                     tot_loss = 0
+
+                    if iterval > 0:
 
                     for step in range(num_steps):
 
                         output = pool.map(env_step, action_space_array)
 
-                        action_space_array, observation, obs_reward = [val[0] for val in output], [val[1] for val in output], np.array([val[2] for val in output])[:,np.newaxis]
+                        action_space_array, observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [[val[2]] for val in output]
 
                         pred_obs, loss, _, summary = sess.run([state_pred, state_cost, update_state, merged_summary_op],
                                                     feed_dict={
