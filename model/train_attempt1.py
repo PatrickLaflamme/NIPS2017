@@ -32,6 +32,7 @@ if __name__ == "__main__":
 
     import tensorflow as tf
     import attempt1 as model
+    import pickle
 
     num_actions = 18
     num_states = 41
@@ -179,3 +180,9 @@ if __name__ == "__main__":
                         print("iter="+str(iterval) + ", average loss=" + str(tot_loss/(display_step*(batch_size+num_relived))))
 
                         saver.save(sess, save_file, global_step=int(iterval/display_step))
+
+        with open('outfile.pkl', 'wb') as fp:
+            pickle.dump(data_save, fp)
+
+
+        print('Training complete! ')
