@@ -22,7 +22,7 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, drop
 
                 mean, var = tf.nn.moments(layer_output, axes=[1])
 
-                layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/5))
+                layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/100))
 
         else:
 
@@ -49,9 +49,9 @@ def gen_mlp_weights(num_input, num_output, n_hidden, n_layers, name=''):
 
     for layer_number in range(n_layers+1):
 
-        weights[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]],stddev=1/(n_hidden[layer_number+1])), name = name + str(layer_number))
+        weights[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]],stddev=1/(2*n_hidden[layer_number+1])), name = name + str(layer_number))
 
-        biases[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number+1]],stddev=1/(n_hidden[layer_number+1])), name = name + str(layer_number) + '_bias')
+        biases[str(layer_number)+'_'+name] = tf.Variable(tf.random_normal([n_hidden[layer_number+1]],stddev=1/(2*n_hidden[layer_number+1])), name = name + str(layer_number) + '_bias')
 
     return [weights, biases]
 
@@ -84,6 +84,8 @@ def action_generation(state_list, state_outcome, weights, biases):
     input_values = tf.concat([state_list, tf.subtract(state_outcome, state_list)],-1)
 
     next_action = multilayer_perceptron(input_values, weights, biases)
+
+    next_action = tf.sigmoid(next_action)
 
     return next_action
 
