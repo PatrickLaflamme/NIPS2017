@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 
 # highly generalized function to perform a feedforward sweep of a fully connected ANN.
-def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, dropout_keep_prob=0.8):
+def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, dropout_keep_prob=0.8, noise = False):
 
     layer_output = x
 
@@ -12,11 +12,17 @@ def multilayer_perceptron(x, weights, biases, activation_func = tf.nn.relu, drop
 
         layer_activation = tf.add(tf.matmul(layer_output, weights[layer]), biases[layer], name="activation" + layer)
 
-        layer_activation = tf.nn.dropout(layer_activation,dropout_keep_prob)
-
         if i < num_keys-1:
 
             layer_output = activation_func(layer_activation, name = "output" + layer)
+
+            layer_output = tf.nn.dropout(layer_output,dropout_keep_prob)
+
+            if noise:
+
+                mean, var = tf.nn.moments(layer_output, axes=[1])
+
+                layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/5))
 
         else:
 
