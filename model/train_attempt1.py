@@ -55,9 +55,9 @@ if __name__ == "__main__":
 
     [weights['state'], biases['state']] = model.gen_state_weights(num_actions, num_states, n_hidden_state, n_layers_state)
 
-    state_pred = model.state_prediction(action_list, state_list, reward, weights['state'], biases['state'])
+    state_pred = model.state_prediction(action_list, state_list, weights['state'], biases['state'])
 
-    state_cost = tf.reduce_mean(tf.square(tf.concat([next_state, reward],-1) - state_pred), name = 'cost')
+    state_cost = tf.reduce_mean(tf.square(state_pred - reward), name = 'cost')
     state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
     update_state = state_optimizer.minimize(state_cost)
 

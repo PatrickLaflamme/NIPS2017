@@ -58,14 +58,14 @@ def gen_mlp_weights(num_input, num_output, n_hidden, n_layers, name=''):
 # Specialized function to generate weights for the state prection sub-model.
 def gen_state_weights(num_actions, num_states, n_hidden, n_layers):
 
-    [weights, biases] = gen_mlp_weights(num_actions + num_states + 1, num_states + 1, n_hidden, n_layers, name = "state_prediction")
+    [weights, biases] = gen_mlp_weights(num_actions + num_states, 1, n_hidden, n_layers, name = "state_prediction")
 
     return [weights, biases]
 
 # Specialized function to perform a feed-forward sweep of the state prediction sub-model.
-def state_prediction(action_list, state_list, reward, weights, biases):
+def state_prediction(action_list, state_list, weights, biases):
 
-    input_values = tf.concat([action_list, state_list, reward],-1)
+    input_values = tf.concat([action_list, state_list],-1)
 
     prediction = multilayer_perceptron(input_values, weights, biases)
 
