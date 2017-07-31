@@ -302,17 +302,17 @@ class ActorCriticDDPG(object):
 
 
         # update the slow networks
-        for layer in self.slow_actor.weights.keys():
+        for i, layer in enumerate(sorted(self.slow_actor.weights.keys())):
 
-            self.slow_actor.weights[layer] = self.actor_network.weights[layer]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_actor.weights[layer]
+            self.slow_actor.weights[layer] = self.actor_network.weights["actor_"+str(i)]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_actor.weights[layer]
 
-            self.slow_actor.biases[layer] = self.actor_network.biases[layer]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_actor.biases[layer]
+            self.slow_actor.biases[layer] = self.actor_network.biases["actor_"+str(i)]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_actor.biases[layer]
 
         for layer in self.slow_critic.weights.keys():
 
-            self.slow_critic.weights[layer] = self.critic_network.weights[layer]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_critic.weights[layer]
+            self.slow_critic.weights[layer] = self.critic_network.weights["critic_"+str(i)]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_critic.weights[layer]
 
-            self.slow_critic.biases[layer] = self.critic_network.biases[layer]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_critic.biases[layer]
+            self.slow_critic.biases[layer] = self.critic_network.biases["critic_"+str(i)]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_critic.biases[layer]
 
         self.train_iteration += 1
 
