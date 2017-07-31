@@ -290,7 +290,7 @@ class ActorCriticDDPG(object):
 
         sample_states = [self.buffer[i] for i in sample_idx]
 
-        print([len(sample) for sample in sample_states])
+        print([sample for sample in sample_states])
 
         old_obs, reward, action, obs = [sample[0] for sample in sample_states], [sample[1] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
 
