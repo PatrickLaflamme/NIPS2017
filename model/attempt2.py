@@ -16,7 +16,7 @@ class mlp_network(object):
                        activation_func = tf.nn.relu,
                        out_activation_function = tf.identity):
 
-        self.weights, self.biases = self.create_variables(state_input, num_output, n_layers, n_hidden)
+        self.weights, self.biases = self.create_variables(num_input, num_output, n_layers, n_hidden)
 
         self.out_activation_function = out_activation_function
 
