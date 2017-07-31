@@ -374,6 +374,8 @@ if __name__ == '__main__':
 
             model.train_step(size)
 
+            print(model.train_iteration)
+
             if step % display_step ==0:
 
                 print("iter = " + str(step) + ", actor_loss = " + str(model.actor_loss/model.train_iteration) + ", critic_loss = " +
