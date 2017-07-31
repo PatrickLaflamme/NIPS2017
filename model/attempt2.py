@@ -274,8 +274,6 @@ class ActorCriticDDPG(object):
 
     def sample_action(self, update_function, pool = None):
 
-        print("action", action_space_array)
-
         observations = [val[0] for val in self.previous_steps]
 
         actions = self.session.run([self.action_estimate], feed_dict={self.states:observations})
@@ -293,8 +291,6 @@ class ActorCriticDDPG(object):
             sample_idx = random.sample(range(self.buffer_location), batch_size)
 
         sample_states = [self.buffer[i] for i in sample_idx]
-
-        print([sample for sample in sample_states])
 
         old_obs, reward, action, obs = [sample[0] for sample in sample_states], [[sample[1]] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
 
