@@ -247,11 +247,11 @@ class ActorCriticDDPG(object):
 
         reset = False
 
-        if index_end > self.buffer.shape[0]:
+        if index_end > len(self.buffer):
 
             reset = True
 
-            index_end = self.buffer.shape[0]
+            index_end = len(self.buffer)
 
             num_save = index_end - self.buffer_location
 
