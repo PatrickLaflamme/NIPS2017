@@ -175,7 +175,7 @@ class ActorCriticDDPG(object):
         with tf.name_scope("compute_pg_gradients"):
 
             self.taken_actions = tf.placeholder(tf.float32, [None, self.num_actions], name = "taken_actions")
-            self.reward = tf.placeholder(tf.float32, [None, 1], name = "known reward")
+            self.reward = tf.placeholder(tf.float32, [None, 1], name = "known_reward")
 
             with tf.variable_scope("Reward_True_Estimate", reuse=True):
                 self.predicted_actions = self.slow_actor.forward_pass(self.states)
