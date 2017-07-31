@@ -344,14 +344,16 @@ if __name__ == '__main__':
         state_dim = 41
         num_actions = 18
 
-        num_steps = 1000000
-        display_step = 100
+        num_steps = 10000000
+        display_step = 250
 
         batch_size = 100
 
         action_space_array = [[[0]*18]]
 
         previous_steps = [[[0]*41,0]]
+
+        saver = tf.train.Saver()
 
         model =  ActorCriticDDPG(session,
                                    optimizer,
@@ -374,12 +376,12 @@ if __name__ == '__main__':
 
             model.train_step(size)
 
-            print(model.train_iteration)
-
-            if step % display_step ==0:
+            if step % display_step == 0:
 
                 print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
                 str(model.tot_critic_loss/model.train_iteration))
+
+                saver.save(session, "model_attempt2_train_1/model_save", global_step = step/display_step)
 
                 model.tot_actor_loss = 0
                 model.tot_critic_loss = 0
