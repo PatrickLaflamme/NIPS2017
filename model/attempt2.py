@@ -85,7 +85,7 @@ class mlp_network(object):
 
         name = self.name
 
-        for layer_number, layer in enumerate(sorted(self.weights.keys())):
+        for layer_number, layer in enumerate(sorted(weights.keys())):
 
             self.weights[name+ "_" + str(layer_number)] = tf.identity(weights[layer], name = name + str(layer_number) + '_weights')
 
