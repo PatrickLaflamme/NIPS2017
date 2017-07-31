@@ -355,7 +355,7 @@ if __name__ == '__main__':
 
         action_space_array = [[[0]*18]]
 
-        previous_steps = [[[0]*41,[0]]]
+        previous_steps = [[[0]*41,0]]
 
         model =  ActorCriticDDPG(session,
                                    optimizer,
