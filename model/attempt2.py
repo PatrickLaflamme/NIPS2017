@@ -296,10 +296,10 @@ class ActorCriticDDPG(object):
 
         print([sample for sample in sample_states])
 
-        old_obs, reward, action, obs = [sample[0] for sample in sample_states], [sample[1] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
+        old_obs, reward, action, obs = [sample[0] for sample in sample_states], [[sample[1]] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
 
         critic_loss, actor_loss, _ = self.session.run([self.critic_loss, self.actor_loss, self.train_op], feed_dict = {self.states: old_obs,
-                                     self.reward: [reward],
+                                     self.reward: reward,
                                      self.taken_actions: action,
                                      self.result_state: obs})
 
