@@ -321,7 +321,7 @@ if __name__ == '__main__':
 
         optimizer = tf.train.GradientDescentOptimizer
         state_dim = 41
-        num_action = 18
+        num_actions = 18
 
         num_steps = 1000000
         display_step = 100
