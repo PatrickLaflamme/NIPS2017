@@ -322,7 +322,7 @@ def env_step(action_space_array, previous_steps, difficulty = 0):
 
     observation, obs_reward, done, info = env.step(action_space_array)
 
-    full_step = previous_steps + [action_space_array, observation]
+    full_step = previous_steps[0] + [action_space_array, observation]
 
     if done:
 
