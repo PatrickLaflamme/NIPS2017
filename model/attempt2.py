@@ -237,11 +237,11 @@ class ActorCriticDDPG(object):
 
         else:
 
-            output = [update_function(action_space_array[0], previous_steps[0])]
+            output = [update_function(action_space_array, previous_steps)]
 
-        buffer_values = np.array([val[0] for val in output])
+        buffer_values = [val[0] for val in output]
 
-        num_save = buffer_values.shape[0]
+        num_save = len(buffer_values)
 
         index_end = self.buffer_location + num_save
 
