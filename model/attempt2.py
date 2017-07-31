@@ -310,7 +310,7 @@ class ActorCriticDDPG(object):
 
             self.slow_actor.biases[layer] = self.actor_network.biases["actor_"+str(i)]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_actor.biases[layer]
 
-        for layer in self.slow_critic.weights.keys():
+        for i, layer in enumerate(sorted(self.slow_critic.weights.keys())):
 
             self.slow_critic.weights[layer] = self.critic_network.weights["critic_"+str(i)]*self.update_lag_factor + (1-self.update_lag_factor) * self.slow_critic.weights[layer]
 
