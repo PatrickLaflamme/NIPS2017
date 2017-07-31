@@ -17,14 +17,15 @@ def env_reset(difficulty):
     env.reset(difficulty=difficulty)
 
 
-def env_step(action_space_array):
-
-    if choice([True, False], p=probs):
-        shuffle(action_space_array)
+def env_step(action_space_array, previous_steps):
 
     observation, obs_reward, done, info = env.step(action_space_array)
 
-    return [action_space_array, observation, obs_reward]
+    if done:
+
+        env.reset(difficulty = difficulty)
+
+    return [previous_steps + [observation], [action_space_array, observation, obs_reward]]
 
 
 
@@ -58,7 +59,7 @@ if __name__ == "__main__":
     state_pred = model.state_prediction(action_list, state_list, weights['state'], biases['state'])
 
     state_cost = tf.reduce_mean(tf.square(state_pred - reward), name = 'cost')
-    state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
+    state_optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
     update_state = state_optimizer.minimize(state_cost)
 
     if sys.argv[1] == 'train_action':
@@ -117,7 +118,7 @@ if __name__ == "__main__":
 
                     output = pool.map(env_step, action_space_array)
 
-                    action_space_array, old_observation, obs_reward = [val[0] for val in output], [val[1] for val in output], [[val[2]] for val in output]
+                    action_space_array, old_observation, obs_reward = [val[0] for val in output] + []
 
                     tot_loss = 0
 
