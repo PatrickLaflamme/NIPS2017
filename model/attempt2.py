@@ -71,7 +71,7 @@ class mlp_network(object):
 
                 if noise:
 
-                    mean, var = tf.nn.moments(layer_output, axes=[1])
+                    mean, var = tf.nn.moments(layer_output, axes=[0,1])
 
                     layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/10))
 
