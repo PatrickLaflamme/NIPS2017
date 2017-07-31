@@ -255,7 +255,7 @@ class ActorCriticDDPG(object):
 
             num_save = index_end - self.buffer_location
 
-        for i in num_save:
+        for i in range(num_save):
 
             self.buffer[self.buffer_location + i] = buffer_values[i]
 
