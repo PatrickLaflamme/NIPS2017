@@ -115,7 +115,7 @@ class ActorCriticDDPG(object):
         self.critic_network = mlp_network(num_input = state_dim + num_actions,
                                           num_output = 1,
                                           n_layers = 3,
-                                          n_hidden = [512, 512, 512],
+                                          n_hidden = [1024, 1024, 1024],
                                           name = "critic")
         self.actor_network = mlp_network(num_input = state_dim,
                                           num_output = num_actions,
@@ -126,7 +126,7 @@ class ActorCriticDDPG(object):
         self.slow_critic = mlp_network(num_input = state_dim + num_actions,
                                           num_output = 1,
                                           n_layers = 3,
-                                          n_hidden = [512, 512, 512],
+                                          n_hidden = [1024, 1024, 1024],
                                           name = "slow_critic")
 
         self.slow_critic.copy(self.critic_network.weights, self.critic_network.biases)
@@ -355,7 +355,7 @@ if __name__ == '__main__':
         num_steps = 10000000
         display_step = 250
 
-        batch_size = 100
+        batch_size = 512
 
         action_space_array = [[[0]*18]]
 
