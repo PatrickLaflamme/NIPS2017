@@ -100,6 +100,7 @@ class ActorCriticDDPG(object):
                        optimizer,
                        state_dim,
                        num_actions,
+                       saver,
                        buffer_size = 1000000,
                        reg_param = 0.001,
                        discount_reward = 0.99,
@@ -109,6 +110,7 @@ class ActorCriticDDPG(object):
 
         self.optimizer = optimizer
         self.session = session
+        self.saver = saver
 
         self.critic_network = mlp_network(num_input = state_dim + num_actions,
                                           num_output = 1,
@@ -229,6 +231,7 @@ class ActorCriticDDPG(object):
 
             # summarize the process
             self.summarize = tf.summary.merge_all()
+            self.saver = self.saver([*self.actor_network_variables, *self.critic_network_variables])
             self.no_op = tf.no_op()
 
     def sim_step(self, action_space_array, previous_steps, update_function, pool = None):
@@ -320,6 +323,9 @@ class ActorCriticDDPG(object):
 
         self.train_iteration += 1
 
+    def save(self):
+        self.saver.save()
+
 def env_step(action_space_array, previous_steps, difficulty = 0):
 
     observation, obs_reward, done, info = env.step(action_space_array)
@@ -360,7 +366,8 @@ if __name__ == '__main__':
         model =  ActorCriticDDPG(session,
                                    optimizer,
                                    state_dim,
-                                   num_actions)
+                                   num_actions,
+                                   saver)
 
         model.sim_step(action_space_array, previous_steps, env_step)
 
