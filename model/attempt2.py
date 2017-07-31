@@ -197,9 +197,9 @@ class ActorCriticDDPG(object):
 
             # clip gradients
             for i, (grad, var) in enumerate(self.gradients):
-            # clip gradients by norm
-            if grad is not None:
-                self.gradients[i] = (tf.clip_by_norm(grad, self.max_gradient), var)
+                # clip gradients by norm
+                if grad is not None:
+                    self.gradients[i] = (tf.clip_by_norm(grad, self.max_gradient), var)
 
             # summarize gradients
             for grad, var in self.gradients:
