@@ -16,15 +16,15 @@ class mlp_network(object):
                        activation_func = tf.nn.relu,
                        out_activation_function = tf.identity):
 
-        self.weights, self.biases = self.create_variables(num_input, num_output, n_layers, n_hidden)
+        self.weights, self.biases = self.create_variables(name, num_input, num_output, n_layers, n_hidden)
 
         self.out_activation_function = out_activation_function
 
-    def create_variables(self, network, num_input, num_output, n_layers, n_hidden):
+    def create_variables(self, name, num_input, num_output, n_layers, n_hidden):
 
         assert n_hidden in [type([1]), type((1)),type(np.array(1))], "n_hidden must be a list or tuple"
 
-        with tf.name_scope(network):
+        with tf.name_scope(name):
 
             weights = dict()
             biases = dict()
