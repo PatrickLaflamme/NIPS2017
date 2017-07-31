@@ -268,13 +268,11 @@ class ActorCriticDDPG(object):
 
             self.buffer_location = index_end
 
-        self.previous_steps = [val[1] for val in output]
+        self.previous_steps = [*val[1] for val in output]
 
     def sample_action(self, update_function, pool = None):
 
         observations = self.previous_steps[0]
-
-        print(observations)
 
         actions = self.session.run([self.action_estimate], feed_dict={self.states:observations})
 
