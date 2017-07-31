@@ -312,6 +312,8 @@ class ActorCriticDDPG(object):
 
 def env_step(action_space_array, previous_steps, difficulty = 0):
 
+    print(action_space_array)
+
     observation, obs_reward, done, info = env.step(action_space_array)
 
     full_step = previous_steps + [action_space_array, observation]
