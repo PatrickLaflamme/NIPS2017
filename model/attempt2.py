@@ -231,8 +231,6 @@ class ActorCriticDDPG(object):
 
     def sim_step(self, action_space_array, previous_steps, update_function, pool = None):
 
-        print("simstep", action_space_array)
-
         if pool:
 
             output = pool.map(update_function, [action_space_array, previous_steps])
@@ -243,11 +241,11 @@ class ActorCriticDDPG(object):
 
         buffer_values = [tuple(val[0]) for val in output]
 
-        print(buffer_values)
-
         num_save = len(buffer_values)
 
         index_end = self.buffer_location + num_save
+
+        print(len(self.buffer))
 
         reset = False
 
