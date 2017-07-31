@@ -319,7 +319,7 @@ if __name__ == '__main__':
 
     with tf.Session() as session:
 
-        optimizer = tf.GradientDescentOptimizer
+        optimizer = tf.train.GradientDescentOptimizer
         state_dim = 41
         num_action = 18
 
