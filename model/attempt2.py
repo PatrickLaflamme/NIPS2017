@@ -355,7 +355,7 @@ if __name__ == '__man__':
 
             if step % display_step ==0:
 
-                print("iter = " + str(step) + ", actor_loss = " str(model.actor_loss/model.train_iteration) + ", critic_loss = " +
+                print("iter = " + str(step) + ", actor_loss = " + str(model.actor_loss/model.train_iteration) + ", critic_loss = " +
                 str(model.critic_loss/model.train_iteration))
 
                 model.actor_loss = 0
