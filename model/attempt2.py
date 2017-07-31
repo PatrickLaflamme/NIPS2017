@@ -46,46 +46,46 @@ class mlp_network(object):
 
             return [weights, biases]
 
-        def forward_pass(self, x, dropout_keep_prob=0.8, noise=False):
+    def forward_pass(self, x, dropout_keep_prob=0.8, noise=False):
 
-            layer_output = x
+        layer_output = x
 
-            weights = self.weights
-            biases = self.biases
+        weights = self.weights
+        biases = self.biases
 
-            num_keys = len(weights.keys())
+        num_keys = len(weights.keys())
 
-            for i, layer in enumerate(sorted(weights.keys())):
+        for i, layer in enumerate(sorted(weights.keys())):
 
-                layer_activation = tf.add(tf.matmul(layer_output, weights[layer]), biases[layer], name="activation" + layer)
+            layer_activation = tf.add(tf.matmul(layer_output, weights[layer]), biases[layer], name="activation" + layer)
 
-                if i < num_keys-1:
+            if i < num_keys-1:
 
-                    layer_output = self.activation_func(layer_activation, name = "output" + layer)
+                layer_output = self.activation_func(layer_activation, name = "output" + layer)
 
-                    layer_output = tf.nn.dropout(layer_output,dropout_keep_prob)
+                layer_output = tf.nn.dropout(layer_output,dropout_keep_prob)
 
-                    if noise:
+                if noise:
 
-                        mean, var = tf.nn.moments(layer_output, axes=[1])
+                    mean, var = tf.nn.moments(layer_output, axes=[1])
 
-                        layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/10))
+                    layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/10))
 
-                else:
+            else:
 
-                    layer_output = self.out_activation_function(layer_activation)
+                layer_output = self.out_activation_function(layer_activation)
 
-                tf.summary.histogram(layer + "output", layer_output)
+            tf.summary.histogram(layer + "output", layer_output)
 
-            return layer_output
+        return layer_output
 
-        def copy(weights, biases):
+    def copy(self, weights, biases):
 
-            for layer in self.weights.keys():
+        for layer in self.weights.keys():
 
-                self.weights[name+ "_" + str(layer_number)] = tf.identity(weights[name+ "_" + str(layer_number)], name = name + str(layer_number) + '_weights')
+            self.weights[name+ "_" + str(layer_number)] = tf.identity(weights[name+ "_" + str(layer_number)], name = name + str(layer_number) + '_weights')
 
-                self.biases[name+ "_" + str(layer_number)] = tf.identity(biases[name+ "_" + str(layer_number)], name = name + str(layer_number) + '_biases')
+            self.biases[name+ "_" + str(layer_number)] = tf.identity(biases[name+ "_" + str(layer_number)], name = name + str(layer_number) + '_biases')
 
 
 class ActorCriticDDPG(object):
