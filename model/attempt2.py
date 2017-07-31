@@ -274,6 +274,8 @@ class ActorCriticDDPG(object):
 
         observations = self.previous_steps[0]
 
+        print(observations)
+
         actions = self.session.run([self.action_estimate], feed_dict={self.states:observations})
 
         self.sim_step(actions, self.previous_steps, env_step, pool = pool)
