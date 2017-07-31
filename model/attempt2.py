@@ -128,7 +128,7 @@ class ActorCriticDDPG(object):
                                           name = "slow_critic")
 
         self.slow_critic.copy(self.critic_network.weights, self.critic_network.biases)
-        
+
         self.slow_actor = mlp_network(num_input = state_dim,
                                           num_output = num_actions,
                                           n_layers = 3,
@@ -184,12 +184,12 @@ class ActorCriticDDPG(object):
 
             with tf.variable_scope("Reward_True_Estimate", reuse=True):
                 self.predicted_actions = self.slow_actor.forward_pass(self.states)
-                self.slow_values_estimate = self.slow_critic.forward_pass(self.states, self.predicted_actions)
+                self.slow_values_estimate = self.slow_critic.forward_pass(tf.concat([self.states, self.predicted_actions], -1))
                 self.assumed_reward = tf.add(self.reward, tf.multiply(self.discount_reward, self.slow_values_estimate))
 
 
             with tf.variable_scope("Critic_Reward_Guess", reuse=True):
-                self.estimated_values = self.critic_network.forward_pass(self.states, self.taken_actions)
+                self.estimated_values = self.critic_network.forward_pass(tf.concat([self.states, self.taken_actions], -1))
 
             # compute critic loss
             self.critic_loss = tf.reduce_mean(tf.square(self.assumed_reward - self.estimated_values))
@@ -200,7 +200,7 @@ class ActorCriticDDPG(object):
             self.critic_gradients = self.optimizer.compute_gradients(self.critic_loss, critic_network_variables)
 
             # compute actor gradients
-            self.actor_loss = tf.reduce_mean(-self.critic_network.forward_pass(self.states, self.action_estimate))
+            self.actor_loss = tf.reduce_mean(-self.critic_network.forward_pass(tf.concat([self.states, self.action_estimate],-1)))
             self.actor_gradients = self.optimizer.compute_gradients(self.actor_loss, actor_network_variables)
 
             # collect all gradients
