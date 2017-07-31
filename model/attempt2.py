@@ -324,7 +324,7 @@ class ActorCriticDDPG(object):
         self.train_iteration += 1
 
     def save(self, step):
-        self.saver.save(sess, "model_attempt2_train_1/model", global_step = step)
+        self.saver.save(self.session, "model_attempt2_train_1/model", global_step = step)
 
 def env_step(action_space_array, previous_steps, difficulty = 0):
 
