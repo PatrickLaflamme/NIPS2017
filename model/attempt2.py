@@ -237,7 +237,7 @@ class ActorCriticDDPG(object):
 
         else:
 
-            output = [update_function(action_space_array, previous_steps)]
+            output = [update_function(action_space_array[0], previous_steps)]
 
         buffer_values = [val[0] for val in output]
 
@@ -349,7 +349,7 @@ if __name__ == '__main__':
 
         batch_size = 100
 
-        action_space_array = [0]*18
+        action_space_array = [[0]*18]
 
         previous_steps = [[0]*41,[0]]
 
