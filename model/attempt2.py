@@ -231,6 +231,8 @@ class ActorCriticDDPG(object):
 
     def sim_step(self, action_space_array, previous_steps, update_function, pool = None):
 
+        print("simstep", action_space_array)
+
         if pool:
 
             output = pool.map(update_function, [action_space_array, previous_steps])
@@ -271,6 +273,8 @@ class ActorCriticDDPG(object):
         self.previous_steps = [valset[1] for valset in output]
 
     def sample_action(self, update_function, pool = None):
+
+        print("action", action_space_array)
 
         observations = [val[0] for val in self.previous_steps]
 
