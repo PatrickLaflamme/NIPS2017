@@ -22,6 +22,8 @@ class mlp_network(object):
 
         self.name = name
 
+        self.activation_func = activation_func
+
     def create_variables(self, name, num_input, num_output, n_layers, n_hidden):
 
         assert type(n_hidden) in [type([1]), type((1)),type(np.array(1))], "n_hidden must be a list or tuple"
