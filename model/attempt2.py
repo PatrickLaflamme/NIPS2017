@@ -323,8 +323,8 @@ class ActorCriticDDPG(object):
 
         self.train_iteration += 1
 
-    def save(self):
-        self.saver.save()
+    def save(self, step):
+        self.saver.save(sess, "model_attempt2_train_1/model", global_step = step)
 
 def env_step(action_space_array, previous_steps, difficulty = 0):
 
@@ -361,7 +361,7 @@ if __name__ == '__main__':
 
         previous_steps = [[[0]*41,0]]
 
-        saver = tf.train.Saver()
+        saver = tf.train.Saver
 
         model =  ActorCriticDDPG(session,
                                    optimizer,
@@ -390,7 +390,7 @@ if __name__ == '__main__':
                 print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
                 str(model.tot_critic_loss/model.train_iteration))
 
-                saver.save([*model.actor_network_variables, *model.critic_network_variables], "model_attempt2_train_1/model_save", global_step = step/display_step)
+                model.save(step/display_step)
 
                 model.tot_actor_loss = 0
                 model.tot_critic_loss = 0
