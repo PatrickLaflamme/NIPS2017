@@ -147,7 +147,7 @@ class ActorCriticDDPG(object):
 
         self.tot_reward = 0
 
-        self.buffer = np.zeros((buffer_size, 4))
+        self.buffer = [None]*buffer_size
         self.buffer_location = 0
         self.full_buffer = False
 
@@ -181,10 +181,11 @@ class ActorCriticDDPG(object):
 
             self.taken_actions = tf.placeholder(tf.float32, [None, self.num_actions], name = "taken_actions")
             self.reward = tf.placeholder(tf.float32, [None, 1], name = "known_reward")
+            self.result_state = tf.placeholder(tf.float32, [None, self.state_dim], name = 'result_state')
 
             with tf.variable_scope("Reward_True_Estimate", reuse=True):
-                self.predicted_actions = self.slow_actor.forward_pass(self.states)
-                self.slow_values_estimate = self.slow_critic.forward_pass(tf.concat([self.states, self.predicted_actions], -1))
+                self.predicted_actions = self.slow_actor.forward_pass(self.result_state)
+                self.slow_values_estimate = self.slow_critic.forward_pass(tf.concat([self.result_state, self.predicted_actions], -1))
                 self.assumed_reward = tf.add(self.reward, tf.multiply(self.discount_reward, self.slow_values_estimate))
 
 
@@ -254,10 +255,9 @@ class ActorCriticDDPG(object):
 
             num_save = index_end - self.buffer_location
 
-        print(buffer_values[range(num_save),:])
-        print(self.buffer[self.buffer_location:index_end,:])
+        for i in num_save:
 
-        self.buffer[self.buffer_location:index_end,:] = buffer_values[range(num_save),:]
+            self.buffer[self.buffer_location + i] = buffer_values[i]
 
         if reset:
 
@@ -282,15 +282,22 @@ class ActorCriticDDPG(object):
 
         if self.full_buffer:
 
-            sample_idx = np.random.choice(self.buffer.shape[0], batch_size, replace=False)
+            sample_idx = random.sample(range(self.buffer.shape[0]), batch_size)
 
         else:
 
-            sample_idx = np.random.choice(self.buffer_location, batch_size, replace=False)
+            sample_idx = random.sample(self.buffer_location, batch_size)
 
-        sample_states = self.buffer[sample_idx,:]
+        sample_states = [self.buffer[i] for i in sample_idx]
 
-        critic_loss, actor_loss, _ = self.session.run([self.critic_loss, self.actor_loss, self.train_op])
+        old_obs, reward, action, obs = [sample[0] for sample in sample_states], [sample[1] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
+
+        critic_loss, actor_loss, _ = self.session.run([self.critic_loss, self.actor_loss, self.train_op], feed_dict = {self.states: old_obs,
+                                     self.reward: reward,
+                                     self.taken_actions: action,
+                                     self.
+
+        })
 
         self.tot_critic_loss += critic_loss
         self.tot_actor_loss += actor_loss
