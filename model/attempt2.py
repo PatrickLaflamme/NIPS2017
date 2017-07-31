@@ -243,9 +243,9 @@ class ActorCriticDDPG(object):
 
         num_save = len(buffer_values)
 
-        index_end = self.buffer_location + num_save
+        print(buffer_values)
 
-        print(len(self.buffer))
+        index_end = self.buffer_location + num_save
 
         reset = False
 
