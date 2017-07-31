@@ -20,6 +20,8 @@ class mlp_network(object):
 
         self.out_activation_function = out_activation_function
 
+        self.name = name
+
     def create_variables(self, name, num_input, num_output, n_layers, n_hidden):
 
         assert type(n_hidden) in [type([1]), type((1)),type(np.array(1))], "n_hidden must be a list or tuple"
@@ -81,11 +83,13 @@ class mlp_network(object):
 
     def copy(self, weights, biases):
 
-        for layer in self.weights.keys():
+        name = self.name
 
-            self.weights[name+ "_" + str(layer_number)] = tf.identity(weights[name+ "_" + str(layer_number)], name = name + str(layer_number) + '_weights')
+        for layer in enumerate(sorted(self.weights.keys())):
 
-            self.biases[name+ "_" + str(layer_number)] = tf.identity(biases[name+ "_" + str(layer_number)], name = name + str(layer_number) + '_biases')
+            self.weights[name+ "_" + str(layer_number)] = tf.identity(weights[layer], name = name + str(layer_number) + '_weights')
+
+            self.biases[name+ "_" + str(layer_number)] = tf.identity(biases[layer], name = name + str(layer_number) + '_biases')
 
 
 class ActorCriticDDPG(object):
