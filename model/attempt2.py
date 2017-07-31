@@ -324,6 +324,9 @@ if __name__ == '__man__':
         num_action = 18
 
         num_steps = 1000000
+        display_step = 100
+
+        batch_size = 100
 
         action_space_array = [[0]*18]
 
@@ -336,4 +339,25 @@ if __name__ == '__man__':
 
         model.sim_step(action_space_array, previous_steps, env_step)
 
-        #for step in range(num_steps):
+        for step in range(num_steps):
+
+            model.sample_action(env_step)
+
+            if step < batch_size:
+
+                size  = step + 1
+
+            else:
+
+                size = batch_size
+
+            model.train_step(size)
+
+            if step % display_step ==0:
+
+                print("iter = " + str(step) + ", actor_loss = " str(model.actor_loss/model.train_iteration) + ", critic_loss = " +
+                str(model.critic_loss/model.train_iteration))
+
+                model.actor_loss = 0
+                model.critic_loss = 0
+                model.train_iteration = 0
