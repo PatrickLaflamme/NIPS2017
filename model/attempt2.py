@@ -378,9 +378,9 @@ if __name__ == '__main__':
 
             if step % display_step ==0:
 
-                print("iter = " + str(step) + ", actor_loss = " + str(model.actor_loss/model.train_iteration) + ", critic_loss = " +
-                str(model.critic_loss/model.train_iteration))
+                print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
+                str(model.tot_critic_loss/model.train_iteration))
 
-                model.actor_loss = 0
-                model.critic_loss = 0
+                model.tot_actor_loss = 0
+                model.tot_critic_loss = 0
                 model.train_iteration = 0
