@@ -231,7 +231,7 @@ class ActorCriticDDPG(object):
 
             # summarize the process
             self.summarize = tf.summary.merge_all()
-            self.saver = self.saver([*self.actor_network_variables, *self.critic_network_variables])
+            self.saver = self.saver()
             self.no_op = tf.no_op()
 
     def sim_step(self, action_space_array, previous_steps, update_function, pool = None):
