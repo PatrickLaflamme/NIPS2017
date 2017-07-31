@@ -194,7 +194,7 @@ class ActorCriticDDPG(object):
             # compute critic loss
             self.critic_loss = tf.reduce_mean(tf.square(self.assumed_reward - self.estimated_values))
             self.critic_reg_loss  = tf.reduce_sum([tf.reduce_sum(tf.square(x)) for x in critic_network_variables])
-            self.critic_loss      = self.mean_square_loss + self.reg_param * self.critic_reg_loss
+            self.critic_loss = self.critic_loss + self.reg_param * self.critic_reg_loss
 
             # compute critic gradients
             self.critic_gradients = self.optimizer.compute_gradients(self.critic_loss, critic_network_variables)
