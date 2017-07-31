@@ -290,6 +290,8 @@ class ActorCriticDDPG(object):
 
         sample_states = [self.buffer[i] for i in sample_idx]
 
+        print([len(sample) for sample in sample_states])
+
         old_obs, reward, action, obs = [sample[0] for sample in sample_states], [sample[1] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
 
         critic_loss, actor_loss, _ = self.session.run([self.critic_loss, self.actor_loss, self.train_op], feed_dict = {self.states: old_obs,
@@ -317,8 +319,6 @@ class ActorCriticDDPG(object):
         self.train_iteration += 1
 
 def env_step(action_space_array, previous_steps, difficulty = 0):
-
-    print(action_space_array)
 
     observation, obs_reward, done, info = env.step(action_space_array)
 
