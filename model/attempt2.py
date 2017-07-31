@@ -317,7 +317,7 @@ def env_step(action_space_array, previous_steps, difficulty = 0):
 
 if __name__ == '__main__':
 
-    with tf.Session as session:
+    with tf.Session() as session:
 
         optimizer = tf.GradientDescentOptimizer
         state_dim = 41
