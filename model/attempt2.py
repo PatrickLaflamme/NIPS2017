@@ -237,7 +237,7 @@ class ActorCriticDDPG(object):
 
         else:
 
-            output = [update_function(action_space_array, previous_steps)]
+            output = [update_function(action_space_array[0], previous_steps[0])]
 
         buffer_values = np.array([val[0] for val in output])
 
