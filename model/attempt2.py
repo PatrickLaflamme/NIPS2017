@@ -241,7 +241,7 @@ class ActorCriticDDPG(object):
 
             output = [update_function(action_space_array[0][0], previous_steps)]
 
-        buffer_values = [val[0] for val in output]
+        buffer_values = [tuple(val[0]) for val in output]
 
         print(buffer_values)
 
