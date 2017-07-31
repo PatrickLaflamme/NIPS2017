@@ -22,7 +22,7 @@ class mlp_network(object):
 
     def create_variables(self, name, num_input, num_output, n_layers, n_hidden):
 
-        assert n_hidden in [type([1]), type((1)),type(np.array(1))], "n_hidden must be a list or tuple"
+        assert type(n_hidden) in [type([1]), type((1)),type(np.array(1))], "n_hidden must be a list or tuple"
 
         with tf.name_scope(name):
 
