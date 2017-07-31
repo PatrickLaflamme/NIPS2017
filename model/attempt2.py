@@ -174,7 +174,7 @@ class ActorCriticDDPG(object):
             with tf.variable_scope("Reward True Estimate", reuse=True):
                 self.predicted_actions = self.slow_actor.forward_pass(self.states)
                 self.slow_values_estimate = self.slow_critic.forward_pass(self.states, self.predicted_actions)
-                self.assumed_reward = tf.add(self.reward, tf.multiply(self.discount_reward, self.slow_values_estimate)
+                self.assumed_reward = tf.add(self.reward, tf.multiply(self.discount_reward, self.slow_values_estimate))
 
 
             with tf.variable_scope("Critic Reward Guess", reuse=True):
@@ -336,4 +336,4 @@ if __name__ == '__man__':
 
         model.sim_step(action_space_array, previous_steps, env_step)
 
-        for step in range(num_steps):
+        #for step in range(num_steps):
