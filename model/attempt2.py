@@ -174,8 +174,8 @@ class ActorCriticDDPG(object):
             with tf.variable_scope('actor'):
                 self.action_estimate = self.actor_network.forward_pass(self.states, noise=True)
 
-        actor_network_variables  = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="actor")
-        critic_network_variables = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="critic")
+        self.actor_network_variables  = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="actor")
+        self.critic_network_variables = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="critic")
 
         with tf.name_scope("compute_pg_gradients"):
 
@@ -194,15 +194,17 @@ class ActorCriticDDPG(object):
 
             # compute critic loss
             self.critic_loss = tf.reduce_mean(tf.square(self.assumed_reward - self.estimated_values))
-            self.critic_reg_loss  = tf.reduce_sum([tf.reduce_sum(tf.square(x)) for x in critic_network_variables])
+            self.critic_reg_loss  = tf.reduce_sum([tf.reduce_sum(tf.square(x)) for x in self.critic_network_variables])
             self.critic_loss = self.critic_loss + self.reg_param * self.critic_reg_loss
 
             # compute critic gradients
-            self.critic_gradients = self.optimizer.compute_gradients(self.critic_loss, critic_network_variables)
+            self.critic_gradients = self.optimizer.compute_gradients(self.critic_loss, self.critic_network_variables)
 
             # compute actor gradients
             self.actor_loss = tf.reduce_mean(-self.critic_network.forward_pass(tf.concat([self.states, self.action_estimate],-1)))
-            self.actor_gradients = self.optimizer.compute_gradients(self.actor_loss, actor_network_variables)
+            self.actor_reg_loss  = tf.reduce_sum([tf.reduce_sum(tf.square(x)) for x in self.actor_network_variables])
+            self.actor_loss = self.actor_loss + self.reg_param * self.actor_reg_loss
+            self.actor_gradients = self.optimizer.compute_gradients(self.actor_loss, self.actor_network_variables)
 
             # collect all gradients
             self.gradients = self.actor_gradients + self.critic_gradients
@@ -381,7 +383,7 @@ if __name__ == '__main__':
                 print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
                 str(model.tot_critic_loss/model.train_iteration))
 
-                saver.save(session, "model_attempt2_train_1/model_save", global_step = step/display_step)
+                saver.save([*model.actor_network_variables, *model.critic_network_variables], "model_attempt2_train_1/model_save", global_step = step/display_step)
 
                 model.tot_actor_loss = 0
                 model.tot_critic_loss = 0
