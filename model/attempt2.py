@@ -390,7 +390,7 @@ if __name__ == '__main__':
                 print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
                 str(model.tot_critic_loss/model.train_iteration))
 
-                model.save(step/display_step)
+                model.save(step)
 
                 model.tot_actor_loss = 0
                 model.tot_critic_loss = 0
