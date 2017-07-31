@@ -158,10 +158,10 @@ class ActorCriticDDPG(object):
 
     def create_variables(self):
 
-        with tf.name_scope("model input"):
+        with tf.name_scope("model_input"):
             self.states = tf.placeholder(tf.float32, [None, self.state_dim], name = 'states')
 
-        with tf.name_scope('feed-forward pass'):
+        with tf.name_scope('feed_forward_pass'):
 
             #for forward pass when generating actions.
             with tf.variable_scope('actor'):
@@ -175,13 +175,13 @@ class ActorCriticDDPG(object):
             self.taken_actions = tf.placeholder(tf.float32, [None, self.num_actions], name = "taken_actions")
             self.reward = tf.placeholder(tf.float32, [None, 1], name = "known reward")
 
-            with tf.variable_scope("Reward True Estimate", reuse=True):
+            with tf.variable_scope("Reward_True_Estimate", reuse=True):
                 self.predicted_actions = self.slow_actor.forward_pass(self.states)
                 self.slow_values_estimate = self.slow_critic.forward_pass(self.states, self.predicted_actions)
                 self.assumed_reward = tf.add(self.reward, tf.multiply(self.discount_reward, self.slow_values_estimate))
 
 
-            with tf.variable_scope("Critic Reward Guess", reuse=True):
+            with tf.variable_scope("Critic_Reward_Guess", reuse=True):
                 self.estimated_values = self.critic_network.forward_pass(self.states, self.taken_actions)
 
             # compute critic loss
