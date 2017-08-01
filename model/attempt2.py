@@ -74,7 +74,7 @@ class mlp_network(object):
 
                     mean, var = tf.nn.moments(layer_output, axes=[0,1])
 
-                    layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/2))
+                    layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)*(1/noise)))
 
             else:
 
@@ -170,12 +170,13 @@ class ActorCriticDDPG(object):
 
         with tf.name_scope("model_input"):
             self.states = tf.placeholder(tf.float32, [None, self.state_dim], name = 'states')
+            self.noise = tf.placeholder(tf.float32, [1], name='noise')
 
         with tf.name_scope('feed_forward_pass'):
 
             #for forward pass when generating actions.
             with tf.variable_scope('actor'):
-                self.action_estimate = self.actor_network.forward_pass(self.states, noise=True)
+                self.action_estimate = self.actor_network.forward_pass(self.states, noise=self.noise)
 
         self.actor_network_variables  = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="actor")
         self.critic_network_variables = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="critic")
