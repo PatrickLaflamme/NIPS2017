@@ -73,7 +73,7 @@ class mlp_network(object):
 
                     mean, var = tf.nn.moments(layer_output, axes=[0,1])
 
-                    layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/10))
+                    layer_output = tf.add(layer_output, tf.random_normal(tf.shape(layer_output), stddev = tf.sqrt(var)/2))
 
             else:
 
@@ -101,7 +101,7 @@ class ActorCriticDDPG(object):
                        state_dim,
                        num_actions,
                        saver,
-                       buffer_size = 1000000,
+                       buffer_size = 10000,
                        reg_param = 0.001,
                        discount_reward = 0.99,
                        max_gradient = 5,
@@ -347,51 +347,52 @@ def env_step(action_space_array, previous_steps, difficulty = 0):
 if __name__ == '__main__':
 
     with tf.Session() as session:
+        with Pool(4) as pool:
 
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-        state_dim = 41
-        num_actions = 18
+            optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+            state_dim = 41
+            num_actions = 18
 
-        num_steps = 10000000
-        display_step = 250
+            num_steps = 10000000
+            display_step = 250
 
-        batch_size = 512
+            batch_size = 512
 
-        action_space_array = [[[0]*18]]
+            action_space_array = [[[0]*18]]
 
-        previous_steps = [[[0]*41,0]]
+            previous_steps = [[[0]*41,0]]
 
-        saver = tf.train.Saver
+            saver = tf.train.Saver
 
-        model =  ActorCriticDDPG(session,
-                                   optimizer,
-                                   state_dim,
-                                   num_actions,
-                                   saver)
+            model =  ActorCriticDDPG(session,
+                                       optimizer,
+                                       state_dim,
+                                       num_actions,
+                                       saver)
 
-        model.sim_step(action_space_array, previous_steps, env_step)
+            model.sim_step(action_space_array, previous_steps, env_step, pool)
 
-        for step in range(num_steps):
+            for step in range(num_steps):
 
-            model.sample_action(env_step)
+                model.sample_action(env_step, pool=pool)
 
-            if step < batch_size:
+                if step < batch_size:
 
-                size  = step + 1
+                    size  = step + 1
 
-            else:
+                else:
 
-                size = batch_size
+                    size = batch_size
 
-            model.train_step(size)
+                model.train_step(size)
 
-            if step % display_step == 0:
+                if step % display_step == 0:
 
-                print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
-                str(model.tot_critic_loss/model.train_iteration))
+                    print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
+                    str(model.tot_critic_loss/model.train_iteration))
 
-                model.save(step)
+                    model.save(step)
 
-                model.tot_actor_loss = 0
-                model.tot_critic_loss = 0
-                model.train_iteration = 0
+                    model.tot_actor_loss = 0
+                    model.tot_critic_loss = 0
+                    model.train_iteration = 0
