@@ -305,7 +305,8 @@ class ActorCriticDDPG(object):
         critic_loss, actor_loss, _ = self.session.run([self.critic_loss, self.actor_loss, self.train_op], feed_dict = {self.states: old_obs,
                                      self.reward: reward,
                                      self.taken_actions: action,
-                                     self.result_state: obs})
+                                     self.result_state: obs,
+                                     self.noise:[1]})
 
         self.tot_critic_loss += critic_loss
         self.tot_actor_loss += actor_loss
