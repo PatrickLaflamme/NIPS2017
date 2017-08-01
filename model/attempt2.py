@@ -347,53 +347,52 @@ def env_step(action_space_array, previous_steps, difficulty = 0):
 
 if __name__ == '__main__':
 
-    with tf.Session() as session:
-        with Pool(4) as pool:
+with tf.Session() as session:
 
-            optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-            state_dim = 41
-            num_actions = 18
+        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+        state_dim = 41
+        num_actions = 18
 
-            num_steps = 10000000
-            display_step = 250
+        num_steps = 10000000
+        display_step = 250
 
-            batch_size = 512
+        batch_size = 256
 
-            action_space_array = [[[0]*18]*4]
+        action_space_array = [[[0]*18]*4]
 
-            previous_steps = [[[0]*41,0]*4]
+        previous_steps = [[[0]*41,0]*4]
 
-            saver = tf.train.Saver
+        saver = tf.train.Saver
 
-            model =  ActorCriticDDPG(session,
-                                       optimizer,
-                                       state_dim,
-                                       num_actions,
-                                       saver)
+        model =  ActorCriticDDPG(session,
+                                   optimizer,
+                                   state_dim,
+                                   num_actions,
+                                   saver)
 
-            model.sim_step(action_space_array, previous_steps, env_step, pool)
+        model.sim_step(action_space_array, previous_steps, env_step)
 
-            for step in range(num_steps):
+        for step in range(num_steps):
 
-                model.sample_action(env_step, pool=pool)
+            model.sample_action(env_step)
 
-                if step < batch_size:
+            if step < batch_size:
 
-                    size  = step + 1
+                size  = step + 1
 
-                else:
+            else:
 
-                    size = batch_size
+                size = batch_size
 
-                model.train_step(size)
+            model.train_step(size)
 
-                if step % display_step == 0:
+            if step % display_step == 0:
 
-                    print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
-                    str(model.tot_critic_loss/model.train_iteration))
+                print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
+                str(model.tot_critic_loss/model.train_iteration))
 
-                    model.save(step)
+                model.save(step)
 
-                    model.tot_actor_loss = 0
-                    model.tot_critic_loss = 0
-                    model.train_iteration = 0
+                model.tot_actor_loss = 0
+                model.tot_critic_loss = 0
+                model.train_iteration = 0
