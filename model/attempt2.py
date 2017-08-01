@@ -241,7 +241,7 @@ class ActorCriticDDPG(object):
 
             var_set = []
 
-            for i in len(action_space_array):
+            for i in range(len(action_space_array)):
 
                 var_set = var_set + action_space_array[i] + previous_steps[i]
 
