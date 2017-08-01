@@ -243,10 +243,10 @@ class ActorCriticDDPG(object):
 
             for i in range(len(action_space_array)):
 
-                var_set = var_set + action_space_array[i] + previous_steps[i]
+                vvar_set.append((action_space_array[i], previous_steps[i]))
 
 
-            output = pool.map(update_function, var_set)
+            output = pool.starmap(update_function, var_set)
 
         else:
 
