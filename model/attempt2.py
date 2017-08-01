@@ -239,7 +239,14 @@ class ActorCriticDDPG(object):
 
         if pool:
 
-            output = pool.map(update_function, [action_space_array, previous_steps])
+            var_set = []
+
+            for i in len(action_space_array):
+
+                var_set = var_set + action_space_array[i] + previous_steps[i]
+
+
+            output = pool.map(update_function, )
 
         else:
 
@@ -359,9 +366,9 @@ if __name__ == '__main__':
 
             batch_size = 512
 
-            action_space_array = [[[0]*18]]
+            action_space_array = [[[0]*18]*4]
 
-            previous_steps = [[[0]*41,0]]
+            previous_steps = [[[0]*41,0]*4]
 
             saver = tf.train.Saver
 
