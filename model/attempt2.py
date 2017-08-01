@@ -51,7 +51,7 @@ class mlp_network(object):
 
             return [weights, biases]
 
-    def forward_pass(self, x, dropout_keep_prob=0.8, noise=False):
+    def forward_pass(self, x, dropout_keep_prob=0.8, noise=None):
 
         layer_output = x
 
@@ -70,7 +70,7 @@ class mlp_network(object):
 
                 layer_output = tf.nn.dropout(layer_output,dropout_keep_prob)
 
-                if noise:
+                if noise is not None:
 
                     mean, var = tf.nn.moments(layer_output, axes=[0,1])
 
