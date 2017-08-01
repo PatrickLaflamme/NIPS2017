@@ -358,9 +358,9 @@ if __name__ == '__main__':
 
         batch_size = 256
 
-        action_space_array = [[[0]*18]*4]
+        action_space_array = [[[0]*18]]
 
-        previous_steps = [[[0]*41,0]*4]
+        previous_steps = [[[0]*41,0]]
 
         saver = tf.train.Saver
 
