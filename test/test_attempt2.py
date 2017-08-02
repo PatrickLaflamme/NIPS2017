@@ -29,7 +29,7 @@ with tf.Session() as session:
 
     for i in range(1500):
 
-        [observation, reward, done, info] = client.env_step(model.gen_actions([observation]), True)
+        [observation, reward, done, info] = client.env_step(model.gen_actions(observation), True)
 
         print(reward)
 
