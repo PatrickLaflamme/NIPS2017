@@ -21,7 +21,7 @@ with tf.Session() as session:
 
     model = attempt2.ActorCriticDDPG(session,
                                     tf.train.GradientDescentOptimizer,
-                                    tf.train.saver,
+                                    tf.train.Saver,
                                     18,
                                     41)
 
