@@ -21,9 +21,9 @@ with tf.Session() as session:
 
     model = attempt2.ActorCriticDDPG(session,
                                     tf.train.GradientDescentOptimizer,
-                                    tf.train.Saver,
+                                    41,
                                     18,
-                                    41)
+                                    tf.train.Saver)
 
     model.restore("../model_attempt2_train_1/")
 
