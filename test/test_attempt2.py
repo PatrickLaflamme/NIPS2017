@@ -21,7 +21,7 @@ with tf.Session() as session:
 
     model = attempt2.ActorCriticDDPG(session,
                                     tf.train.GradientDescentOptimizer,
-                                    tf.save.saver,
+                                    tf.train.saver,
                                     18,
                                     41)
 
@@ -37,5 +37,5 @@ with tf.Session() as session:
             observation = client.env_reset()
             if not observation:
                 break
-                
+
     client.submit()
