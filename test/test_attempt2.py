@@ -5,7 +5,7 @@ import sys
 from osim.http.client import Client
 from osim.env import RunEnv
 
-sys.path.append(../model)
+sys.path.append('../model')
 
 import attempt2
 
