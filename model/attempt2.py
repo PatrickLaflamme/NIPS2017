@@ -177,7 +177,7 @@ class ActorCriticDDPG(object):
             #for forward pass when generating actions.
             with tf.variable_scope('actor'):
                 self.action_estimate = self.actor_network.forward_pass(self.states, noise=self.noise)
-                self.chosen_actions = self.actor_network.forward_pass(self.states, name="predictions")
+                self.chosen_actions = self.actor_network.forward_pass(self.states)
 
         self.actor_network_variables  = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="actor")
         self.critic_network_variables = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="critic")
