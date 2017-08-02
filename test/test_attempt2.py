@@ -35,6 +35,7 @@ with tf.Session() as session:
 
         if done:
             observation = client.env_reset()
-                if not observation:
-                    break
+            if not observation:
+                break
+                
     client.submit()
