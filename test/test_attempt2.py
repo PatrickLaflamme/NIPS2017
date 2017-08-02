@@ -20,7 +20,7 @@ observation = client.env_create(crowdai_token)
 with tf.Session() as session:
 
     model = attempt2.ActorCriticDDPG(session,
-                                    tf.train.GradientDescentOptimizer(),
+                                    tf.train.GradientDescentOptimizer(learning_rate=0.01),
                                     41,
                                     18,
                                     tf.train.Saver)
