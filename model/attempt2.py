@@ -336,7 +336,7 @@ class ActorCriticDDPG(object):
 
     def gen_actions(self, observation):
 
-        actions = self.session.run([self.chosen_actions], feed_dict={self.states:observation})
+        actions = self.session.run([self.chosen_actions], feed_dict={self.states:[observation]})
 
         return actions
 
