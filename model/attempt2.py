@@ -338,9 +338,9 @@ class ActorCriticDDPG(object):
 
         [actions] = self.session.run([self.chosen_actions], feed_dict={self.states:[observation]})
 
-        print(actions)
+        print(actions[0])
 
-        return actions.tolist()
+        return actions[0]
 
 
 
