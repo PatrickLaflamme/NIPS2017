@@ -177,6 +177,7 @@ class ActorCriticDDPG(object):
             #for forward pass when generating actions.
             with tf.variable_scope('actor'):
                 self.action_estimate = self.actor_network.forward_pass(self.states, noise=self.noise)
+                self.chosen_actions = self.actor_network.forward_pass(self.states, name="predictions")
 
         self.actor_network_variables  = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="actor")
         self.critic_network_variables = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope="critic")
@@ -329,6 +330,17 @@ class ActorCriticDDPG(object):
 
     def save(self, step):
         self.saver.save(self.session, "model_attempt2_train_1/model", global_step = step)
+
+    def restore(self, dir):
+        self.saver.restore(self.session, tf.train.latest_checkpoint(dir))
+
+    def gen_actions(self, observation):
+
+        actions = self.session.run([self.chosen_actions], feed_dict{self.states:observation})
+
+        return actions
+
+
 
 def env_step(action_space_array, previous_steps, difficulty = 0):
 
