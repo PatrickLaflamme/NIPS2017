@@ -237,7 +237,7 @@ class ActorCriticDDPG(object):
             self.saver = self.saver()
             self.no_op = tf.no_op()
 
-    def sim_step(self, action_space_array, previous_steps, update_function, pool = None):
+    def sim_step(self, action_space_array, previous_steps, update_function, pool = None, difficulty=0):
 
         if pool:
 
@@ -245,7 +245,7 @@ class ActorCriticDDPG(object):
 
         else:
 
-            output = [update_function(action_space_array[0][0], previous_steps)]
+            output = [update_function(action_space_array[0][0], previous_steps, difficulty=difficulty)]
 
         buffer_values = [tuple(val[0]) for val in output]
 
@@ -280,14 +280,14 @@ class ActorCriticDDPG(object):
 
         self.previous_steps = [valset[1] for valset in output]
 
-    def sample_action(self, update_function, pool = None):
+    def sample_action(self, update_function, difficulty = 0,pool = None):
 
         observations = [val[0] for val in self.previous_steps]
 
         actions = self.session.run([self.action_estimate], feed_dict={self.states:observations, self.noise:[random.choice(range(2,100))]
         })
 
-        self.sim_step(actions, self.previous_steps, env_step, pool = pool)
+        self.sim_step(actions, self.previous_steps, env_step, pool = pool, difficulty=difficulty)
 
     def train_step(self, batch_size):
 
@@ -386,11 +386,11 @@ if __name__ == '__main__':
                                    saver)
         model.restore("model_attempt2_train_1/")
 
-        model.sim_step(action_space_array, previous_steps, env_step)
+        model.sim_step(action_space_array, previous_steps, env_step, difficulty=1)
 
         for step in range(num_steps):
 
-            model.sample_action(env_step)
+            model.sample_action(env_step, difficulty=1)
 
             if step < batch_size:
 
