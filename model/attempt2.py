@@ -338,8 +338,6 @@ class ActorCriticDDPG(object):
 
         [actions] = self.session.run([self.chosen_actions], feed_dict={self.states:[observation]})
 
-        print(actions[0,:].tolist())
-
         return actions[0,:].tolist()
 
 
@@ -386,6 +384,7 @@ if __name__ == '__main__':
                                    state_dim,
                                    num_actions,
                                    saver)
+        model.restore("model_attempt2_train_1/")
 
         model.sim_step(action_space_array, previous_steps, env_step)
 
