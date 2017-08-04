@@ -387,13 +387,13 @@ if __name__ == '__main__':
                                    num_actions,
                                    saver)
 
-        #model.restore("model_attempt2_train_1/")
+        model.restore("model_attempt2_train_1_bkp/")
 
-        model.sim_step(action_space_array, previous_steps, env_step, difficulty=1)
+        model.sim_step(action_space_array, previous_steps, env_step, difficulty=2)
 
         for step in range(num_steps):
 
-            model.sample_action(env_step, difficulty=1)
+            model.sample_action(env_step, difficulty=2)
 
             if step < batch_size:
 
