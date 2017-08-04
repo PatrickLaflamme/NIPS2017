@@ -301,7 +301,7 @@ class ActorCriticDDPG(object):
 
             sample_idx = random.sample(range(self.buffer_location), batch_size)
 
-        sample_states = [self.buffer[i] for i in sample_idx]
+        sample_states = random.sample(self.buffer[0:self.buffer_location], batch_size)
 
         old_obs, reward, action, obs = [sample[0] for sample in sample_states], [[sample[1]] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
 
