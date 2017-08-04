@@ -122,7 +122,8 @@ class ActorCriticDDPG(object):
                                           num_output = num_actions,
                                           n_layers = 3,
                                           n_hidden = [1024, 1024, 1024],
-                                          name = "actor")
+                                          name = "actor",
+                                          out_activation_function = tf.sigmoid)
 
         self.slow_critic = mlp_network(num_input = state_dim + num_actions,
                                           num_output = 1,
@@ -136,7 +137,8 @@ class ActorCriticDDPG(object):
                                           num_output = num_actions,
                                           n_layers = 3,
                                           n_hidden = [1024, 1024, 1024],
-                                          name = "slow_actor")
+                                          name = "slow_actor",
+                                          out_activation_function = tf.sigmoid)
 
         self.slow_actor.copy(self.actor_network.weights, self.actor_network.biases)
 
@@ -384,7 +386,8 @@ if __name__ == '__main__':
                                    state_dim,
                                    num_actions,
                                    saver)
-        model.restore("model_attempt2_train_1/")
+
+        #model.restore("model_attempt2_train_1/")
 
         model.sim_step(action_space_array, previous_steps, env_step, difficulty=1)
 
