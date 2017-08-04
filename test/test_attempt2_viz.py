@@ -12,7 +12,7 @@ import attempt2
 remote_base = "http://grader.crowdai.org:1729"
 crowdai_token = sys.argv[1]
 
-client = = RunEnv(visualize=True)
+client = RunEnv(visualize=True)
 # Create environment
 observation = client.reset(difficulty=2)
 
