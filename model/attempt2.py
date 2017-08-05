@@ -286,7 +286,7 @@ class ActorCriticDDPG(object):
 
         observations = [val[0] for val in self.previous_steps]
 
-        actions = self.session.run([self.action_estimate], feed_dict={self.states:observations, self.noise:[random.choice(range(2,100))]
+        actions = self.session.run([self.action_estimate], feed_dict={self.states:observations, self.noise:[random.choice(range(1,10))]
         })
 
         self.sim_step(actions, self.previous_steps, env_step, pool = pool, difficulty=difficulty)
