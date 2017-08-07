@@ -401,7 +401,7 @@ if __name__ == '__main__':
 
                 size = batch_size
 
-            model.train_step(size, step)
+            model.train_step(size)
 
             if step % display_step == 0:
 
