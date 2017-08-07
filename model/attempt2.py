@@ -295,13 +295,11 @@ class ActorCriticDDPG(object):
 
         if self.full_buffer:
 
-            sample_idx = random.sample(range(len(self.buffer)), batch_size)
+            sample_idx = random.sample(self.buffer, batch_size)
 
         else:
 
-            sample_idx = random.sample(range(self.buffer_location), batch_size)
-
-        sample_states = random.sample(self.buffer[0:self.buffer_location], batch_size)
+            sample_states = random.sample(self.buffer[0:self.buffer_location], batch_size)
 
         old_obs, reward, action, obs = [sample[0] for sample in sample_states], [[sample[1]] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
 
@@ -403,7 +401,7 @@ if __name__ == '__main__':
 
                 size = batch_size
 
-            model.train_step(size)
+            model.train_step(size, step)
 
             if step % display_step == 0:
 
