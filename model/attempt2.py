@@ -102,7 +102,7 @@ class ActorCriticDDPG(object):
                        state_dim,
                        num_actions,
                        saver,
-                       buffer_size = 10000,
+                       buffer_size = 2000,
                        reg_param = 0.001,
                        discount_reward = 0.99,
                        max_gradient = 5,
