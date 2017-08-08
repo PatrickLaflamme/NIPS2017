@@ -295,7 +295,7 @@ class ActorCriticDDPG(object):
 
         if self.full_buffer:
 
-            sample_idx = random.sample(self.buffer, batch_size)
+            sample_states = random.sample(self.buffer, batch_size)
 
         else:
 
