@@ -45,7 +45,7 @@ class mlp_network(object):
 
             for layer_number in range(n_layers+1):
 
-                weights[name+ "_" + str(layer_number)] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]],stddev=1/(5*n_hidden[layer_number+1])), name = name + str(layer_number) + '_weights')
+                weights[name+ "_" + str(layer_number)] = tf.Variable(tf.random_normal([n_hidden[layer_number], n_hidden[layer_number+1]], name = name + str(layer_number) + '_weights')
 
                 biases[name+ "_" + str(layer_number)] = tf.Variable(tf.random_normal([n_hidden[layer_number+1]],stddev=1/(5*n_hidden[layer_number+1])), name = name + str(layer_number) + '_bias')
 
@@ -385,7 +385,7 @@ if __name__ == '__main__':
                                    num_actions,
                                    saver)
 
-        model.restore("model_attempt2_train_1/")
+        #model.restore("model_attempt2_train_1/")
 
         model.sim_step(action_space_array, previous_steps, env_step, difficulty=2)
 
