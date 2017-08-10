@@ -385,7 +385,7 @@ if __name__ == '__main__':
                                    num_actions,
                                    saver)
 
-        #model.restore("model_attempt2_train_1/")
+        model.restore("model_attempt2_train_1/")
 
         model.sim_step(action_space_array, previous_steps, env_step, difficulty=2)
 
@@ -405,10 +405,10 @@ if __name__ == '__main__':
 
             if step % display_step == 0:
 
-                print("iter = " + str(step) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
+                print("iter = " + str(step+18750) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
                 str(model.tot_critic_loss/model.train_iteration))
 
-                model.save(step)
+                model.save(step+18750)
 
                 model.tot_actor_loss = 0
                 model.tot_critic_loss = 0
