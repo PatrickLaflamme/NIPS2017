@@ -3,6 +3,7 @@ import tensorflow as tf
 import random
 from osim.env import RunEnv
 from multiprocessing import Pool
+from pympler import summary
 
 env = RunEnv(visualize=False)
 env.reset(difficulty=0)
@@ -253,8 +254,6 @@ class ActorCriticDDPG(object):
 
         num_save = len(buffer_values)
 
-        #print("output:", output)
-
         index_end = self.buffer_location + num_save
 
         reset = False
@@ -267,18 +266,17 @@ class ActorCriticDDPG(object):
 
             num_save = index_end - self.buffer_location
 
-        for i in range(num_save):
-
-            self.buffer[self.buffer_location + i] = buffer_values[i]
-
-        if reset:
-
             self.buffer_location = 0
             self.full_buffer = True
 
         else:
 
             self.buffer_location = index_end
+
+        for i in range(num_save):
+
+            self.buffer[self.buffer_location + i] = buffer_values[i]
+
 
         self.previous_steps = [valset[1] for valset in output]
 
@@ -379,6 +377,8 @@ if __name__ == '__main__':
 
         saver = tf.train.Saver
 
+        writer = tf.summary.FileWriter()
+
         model =  ActorCriticDDPG(session,
                                    optimizer,
                                    state_dim,
@@ -405,10 +405,10 @@ if __name__ == '__main__':
 
             if step % display_step == 0:
 
-                print("iter = " + str(step+18750) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
+                print("iter = " + str(step+39250) + ", actor_loss = " + str(model.tot_actor_loss/model.train_iteration) + ", critic_loss = " +
                 str(model.tot_critic_loss/model.train_iteration))
 
-                model.save(step+18750)
+                model.save(step+39250)
 
                 model.tot_actor_loss = 0
                 model.tot_critic_loss = 0
