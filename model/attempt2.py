@@ -3,7 +3,6 @@ import tensorflow as tf
 import random
 from osim.env import RunEnv
 from multiprocessing import Pool
-from pympler import summary
 
 env = RunEnv(visualize=False)
 env.reset(difficulty=0)
