@@ -376,15 +376,13 @@ if __name__ == '__main__':
 
         saver = tf.train.Saver
 
-        writer = tf.summary.FileWriter()
+        writer = tf.summary.FileWriter("model_attempt2_train_1_log")
 
         model =  ActorCriticDDPG(session,
                                    optimizer,
                                    state_dim,
                                    num_actions,
                                    saver)
-
-        model.restore("model_attempt2_train_1/")
 
         model.sim_step(action_space_array, previous_steps, env_step, difficulty=2)
 
