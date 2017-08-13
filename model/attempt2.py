@@ -269,6 +269,8 @@ class ActorCriticDDPG(object):
             self.buffer_location = 0
             self.full_buffer = True
 
+            print("buffer is full. Re-starting from the beginning")
+
         for i in range(num_save):
 
             self.buffer[self.buffer_location + i] = buffer_values[i]
@@ -300,7 +302,6 @@ class ActorCriticDDPG(object):
 
             sample_states = random.sample(self.buffer[0:self.buffer_location], batch_size)
 
-            print(sample_states);
         old_obs, reward, action, obs = [sample[0] for sample in sample_states], [[sample[1]] for sample in sample_states], [sample[2] for sample in sample_states], [sample[3] for sample in sample_states]
 
         critic_loss, actor_loss, _ = self.session.run([self.critic_loss, self.actor_loss, self.train_op], feed_dict = {self.states: old_obs,
