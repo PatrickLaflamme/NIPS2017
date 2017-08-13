@@ -257,7 +257,7 @@ class ActorCriticDDPG(object):
 
         reset = False
 
-        if index_end > len(self.buffer):
+        if index_end >= len(self.buffer):
 
             reset = True
 
@@ -268,14 +268,15 @@ class ActorCriticDDPG(object):
             self.buffer_location = 0
             self.full_buffer = True
 
-        else:
-
-            self.buffer_location = index_end
-
         for i in range(num_save):
 
             self.buffer[self.buffer_location + i] = buffer_values[i]
 
+        if index_end < len(self.buffer):
+
+            self.buffer_location = index_end
+
+        gc.collect()
 
         self.previous_steps = [valset[1] for valset in output]
 
