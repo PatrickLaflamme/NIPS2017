@@ -3,6 +3,7 @@ import tensorflow as tf
 import random
 from osim.env import RunEnv
 from multiprocessing import Pool
+import gc
 
 env = RunEnv(visualize=False)
 env.reset(difficulty=0)
